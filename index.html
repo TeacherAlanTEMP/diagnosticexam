@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMP | Grammar Deep Scan v2.1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --temp-navy: #0a192f; --temp-gold: #d4af37; --temp-light-navy: #112240; --temp-text: #ccd6f6; }
+        body { background-color: var(--temp-navy); color: var(--temp-text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .option-btn { background-color: #112240; border: 1px solid #233554; padding: 0.8rem; border-radius: 0.5rem; width: 100%; text-align: left; transition: all 0.2s; color: #ccd6f6; font-size: 0.95rem; }
+        .option-btn:hover { border-color: var(--temp-gold); background-color: #1a365d; }
+        .progress-bar { height: 6px; background-color: #233554; width: 100%; position: fixed; top: 0; left: 0; z-index: 50; }
+        .progress-fill { height: 100%; background-color: var(--temp-gold); width: 0%; transition: width 0.3s; }
+        #pdf-report { background: white; color: black; padding: 40px; display: none; }
+        .pdf-row { border-bottom: 1px solid #ddd; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+
+    <div id="screen-welcome" class="w-full max-w-3xl bg-[#0a192f] p-8 rounded-xl shadow-2xl border border-[#233554] text-center">
+        <i class="fa-solid fa-layer-group text-6xl text-[#d4af37] mb-6"></i>
+        <h1 class="text-4xl font-bold text-white mb-2">GRAMMAR DEEP SCAN</h1>
+        <p class="text-gray-400 mb-8 text-lg">Evaluación de Precisión Estructural (60 Puntos)</p>
+        
+        <div class="mb-8 text-left bg-[#112240] p-6 rounded-lg text-sm border border-[#233554]">
+            <p class="text-gold mb-2 font-bold uppercase">Protocolo de Examen:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                <li><strong>Cobertura Total:</strong> A1 (Básico) a B2 (Avanzado).</li>
+                <li><strong>Duración:</strong> Aprox. 15-20 minutos.</li>
+                <li><strong>Regla de Oro:</strong> Responde con tu primer instinto. No busques ayuda.</li>
+            </ul>
+        </div>
+
+        <input type="text" id="studentNameInput" placeholder="Nombre Completo del Alumno" class="w-full p-4 mb-6 rounded bg-[#0a192f] border border-[#233554] text-white focus:border-[#d4af37] outline-none text-center text-lg shadow-inner">
+
+        <button onclick="startQuiz()" class="bg-[#d4af37] text-[#0a192f] font-bold py-4 px-10 rounded shadow-lg hover:bg-[#b5952f] w-full transition transform hover:scale-105 uppercase tracking-widest">
+            Comenzar Evaluación
+        </button>
+    </div>
+
+    <div id="screen-quiz" class="hidden w-full max-w-3xl">
+        <div class="bg-[#0a192f] p-8 rounded-xl shadow-2xl border border-[#233554]">
+            <div class="flex justify-between items-center mb-8 text-sm font-bold text-gray-500 uppercase tracking-widest">
+                <span id="question-level" class="bg-[#112240] px-3 py-1 rounded text-[#d4af37]">Nivel A1</span>
+                <span><span id="q-current">1</span> / 60</span>
+            </div>
+
+            <h2 id="question-text" class="text-2xl font-bold text-white mb-8 leading-relaxed"></h2>
+
+            <div id="options-container" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <div id="screen-results" class="hidden w-full max-w-3xl text-center">
+        <div class="bg-[#0a192f] p-10 rounded-xl shadow-2xl border border-[#233554]">
+            <div class="w-24 h-24 bg-[#112240] rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-[#d4af37]">
+                <i class="fa-solid fa-check text-4xl text-[#d4af37]"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2">Evaluación Finalizada</h2>
+            <p class="text-gray-400 mb-8">Resultados enviados al profesor.</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-[#112240] p-6 rounded border border-gray-700">
+                    <p class="text-xs text-gray-500 uppercase">Puntuación Total</p>
+                    <p id="final-score" class="text-4xl font-bold text-white mt-1">0/60</p>
+                </div>
+                <div class="bg-[#112240] p-6 rounded border border-gray-700">
+                    <p class="text-xs text-gray-500 uppercase">Nivel Asignado</p>
+                    <p id="final-level" class="text-4xl font-bold text-[#d4af37] mt-1">A1</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mb-4">
+                <button onclick="downloadReport()" class="flex-1 bg-gray-700 text-white font-bold py-4 rounded shadow-lg hover:bg-gray-600 transition">
+                    <i class="fa-solid fa-download mr-2"></i> DESCARGAR PDF
+                </button>
+                <button onclick="copyResultToken()" id="btn-copy-token" class="flex-1 bg-[#d4af37] text-[#0a192f] font-bold py-4 rounded shadow-lg hover:bg-[#b5952f] transition flex flex-col items-center justify-center">
+                    <span><i class="fa-solid fa-copy mr-2"></i> COPIAR TOKEN</span>
+                </button>
+            </div>
+             <p id="upload-status" class="text-xs text-gray-500 mt-4"></p>
+        </div>
+    </div>
+
+    <div id="pdf-report">
+        <div style="border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between;">
+            <div>
+                <h1 style="font-size: 28px; font-weight: bold; margin: 0;">GRAMMAR DEEP SCAN</h1>
+                <p style="font-size: 12px; font-weight: bold; color: #d4af37; letter-spacing: 2px;">THE ENGLISH MASTER PROTOCOL</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-size: 14px; font-weight: bold;" id="pdf-student-name">Alumno</p>
+                <p style="font-size: 12px; color: #666;" id="pdf-date">Date</p>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+            <div style="flex: 1; background: #f4f4f4; padding: 20px; border-radius: 8px; text-align: center;">
+                <p style="font-size: 10px; text-transform: uppercase; color: #666;">Puntuación Global</p>
+                <p style="font-size: 36px; font-weight: bold; margin: 5px 0;" id="pdf-score">0/60</p>
+            </div>
+            <div style="flex: 1; background: #0a192f; color: white; padding: 20px; border-radius: 8px; text-align: center;">
+                <p style="font-size: 10px; text-transform: uppercase; color: #aaa;">Nivel CEFR</p>
+                <p style="font-size: 36px; font-weight: bold; margin: 5px 0; color: #d4af37;" id="pdf-level">A1</p>
+            </div>
+        </div>
+
+        <h3 style="font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Desglose por Nivel</h3>
+        <div class="pdf-row"><strong>Nivel A1:</strong> <span id="pdf-a1"></span></div>
+        <div class="pdf-row"><strong>Nivel A2:</strong> <span id="pdf-a2"></span></div>
+        <div class="pdf-row"><strong>Nivel B1:</strong> <span id="pdf-b1"></span></div>
+        <div class="pdf-row"><strong>Nivel B2:</strong> <span id="pdf-b2"></span></div>
+
+        <h3 style="font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; margin-top: 30px; text-transform: uppercase;">Análisis de Errores</h3>
+        <ul id="pdf-errors" style="font-size: 12px; line-height: 1.6; color: #d00;"></ul>
+
+        <div style="margin-top: 40px; padding: 15px; background: #f9f9f9; border-left: 4px solid #d4af37;">
+            <p style="font-size: 10px; font-weight: bold; text-transform: uppercase; color: #666; margin-bottom: 5px;">Recomendación</p>
+            <p style="font-size: 12px;" id="pdf-recommendation"></p>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {l:'A1', t:'To Be', q:'I ___ a student.', o:['is','are','am','be'], a:2},
+            {l:'A1', t:'Present Simple', q:'She ___ pizza.', o:['like','likes','liking','is like'], a:1},
+            {l:'A1', t:'Auxiliary', q:'___ you speak English?', o:['Are','Is','Does','Do'], a:3},
+            {l:'A1', t:'Possessives', q:'This is ___ book.', o:['my','I','mine','me'], a:0},
+            {l:'A1', t:'Plurals', q:'Three ___ are in the park.', o:['childs','children','child','childrens'], a:1},
+            {l:'A1', t:'There Is/Are', q:'___ two cars in the garage.', o:['There is','There are','Is','Are'], a:1},
+            {l:'A1', t:'Word Order', q:'___ from Spain?', o:['You are','Are you','You is','Is you'], a:1},
+            {l:'A1', t:'Pronouns', q:'___ is my sister.', o:['He','She','It','They'], a:1},
+            {l:'A1', t:'Negatives', q:'I ___ happy.', o:['no am','am not','not am','don\'t'], a:1},
+            {l:'A1', t:'Articles', q:'I have ___ apple.', o:['a','an','the','two'], a:1},
+            {l:'A1', t:'Present Continuous', q:'He ___ sleeping now.', o:['is','are','do','does'], a:0},
+            {l:'A1', t:'Can', q:'I ___ swim very well.', o:['can','cans','canning','to can'], a:0},
+            {l:'A1', t:'Past Be', q:'Where ___ you yesterday?', o:['was','were','did','are'], a:1},
+            {l:'A1', t:'Object Pronouns', q:'Listen to ___.', o:['I','me','my','mine'], a:1},
+            {l:'A1', t:'Wh- Questions', q:'___ is your name?', o:['Who','When','What','Where'], a:2},
+            {l:'A2', t:'Past Simple', q:'I ___ to the cinema last night.', o:['go','went','gone','goed'], a:1},
+            {l:'A2', t:'Did', q:'___ she call you?', o:['Do','Does','Did','Was'], a:2},
+            {l:'A2', t:'Comparatives', q:'London is ___ than Paris.', o:['big','bigger','more big','biger'], a:1},
+            {l:'A2', t:'Superlatives', q:'It is the ___ place in the world.', o:['goodest','most good','best','better'], a:2},
+            {l:'A2', t:'Going To', q:'I ___ buy a car.', o:['will','am going to','go to','going'], a:1},
+            {l:'A2', t:'Quantifiers', q:'I don\'t have ___ money.', o:['some','many','much','no'], a:2},
+            {l:'A2', t:'Adverbs', q:'She sings ___.', o:['good','bad','beautiful','beautifully'], a:3},
+            {l:'A2', t:'Prepositions', q:'See you ___ Friday.', o:['in','at','on','by'], a:2},
+            {l:'A2', t:'Infinitive', q:'I want ___ go home.', o:['to','for','that','___'], a:0},
+            {l:'A2', t:'Present Perfect', q:'I ___ seen that movie.', o:['have','has','did','was'], a:0},
+            {l:'A2', t:'Should', q:'You ___ see a doctor.', o:['should to','should','ought','need'], a:1},
+            {l:'A2', t:'Possessive \'s', q:'This is ___ car.', o:['Johns','John\'s','Johns\'','John is'], a:1},
+            {l:'A2', t:'Conjunctions', q:'I was tired, ___ I went to bed.', o:['because','but','so','or'], a:2},
+            {l:'A2', t:'Someone/Anyone', q:'Is there ___ here?', o:['someone','anyone','no one','everyone'], a:1},
+            {l:'A2', t:'Prepositions Place', q:'The cat is ___ the table.', o:['under','in','at','to'], a:0},
+            {l:'B1', t:'First Conditional', q:'If it rains, I ___ stay home.', o:['stay','will','would','am'], a:1},
+            {l:'B1', t:'Second Conditional', q:'If I ___ rich, I would travel.', o:['am','was','were','would be'], a:2},
+            {l:'B1', t:'Past Continuous', q:'I ___ when the phone rang.', o:['slept','was sleeping','sleep','am sleeping'], a:1},
+            {l:'B1', t:'Passive Voice', q:'The book ___ written by him.', o:['is','was','has','did'], a:1},
+            {l:'B1', t:'Used to', q:'I ___ live in New York.', o:['use to','used to','using to','usually'], a:1},
+            {l:'B1', t:'Present Perfect Continuous', q:'I ___ waiting for 2 hours.', o:['am','have been','was','had been'], a:1},
+            {l:'B1', t:'Modals (Must)', q:'You ___ smoke here. It\'s illegal.', o:['don\'t have to','mustn\'t','shouldn\'t','needn\'t'], a:1},
+            {l:'B1', t:'Relative Clauses', q:'The man ___ called me is here.', o:['which','who','whose','whom'], a:1},
+            {l:'B1', t:'Gerunds', q:'I enjoy ___ tennis.', o:['play','to play','playing','played'], a:2},
+            {l:'B1', t:'So/Neither', q:'"I like tea." "So ___ I."', o:['do','am','have','like'], a:0},
+            {l:'B1', t:'Reported Speech', q:'He said he ___ busy.', o:['is','was','will be','has been'], a:1},
+            {l:'B1', t:'Enough', q:'He is not old ___ to drive.', o:['enough','too','very','so'], a:0},
+            {l:'B1', t:'Question Tags', q:'You are Spanish, ___?', o:['aren\'t you','isn\'t it','don\'t you','do you'], a:0},
+            {l:'B1', t:'Just/Yet/Already', q:'I haven\'t finished ___.', o:['just','already','yet','since'], a:2},
+            {l:'B1', t:'Phrasal Verbs', q:'Please ___ off your shoes.', o:['take','put','get','make'], a:0},
+            {l:'B2', t:'Third Conditional', q:'If I had known, I ___ helped.', o:['would','will','would have','had'], a:2},
+            {l:'B2', t:'Past Perfect', q:'The train ___ left when we arrived.', o:['has','had','was','did'], a:1},
+            {l:'B2', t:'Future Perfect', q:'By 2030, we ___ finished.', o:['will be','will have','are','have'], a:1},
+            {l:'B2', t:'Mixed Conditionals', q:'If I ___ studied, I would be rich now.', o:['have','had','would have','was'], a:1},
+            {l:'B2', t:'Inversion', q:'Never ___ seen such a thing.', o:['I have','have I','did I','I did'], a:1},
+            {l:'B2', t:'Causative', q:'I need to ___ my car fixed.', o:['make','do','get','let'], a:2},
+            {l:'B2', t:'Wishes', q:'I wish I ___ taller.', o:['am','were','will be','would be'], a:1},
+            {l:'B2', t:'Connectors', q:'___ the rain, we went out.', o:['Although','Despite','However','Even'], a:1},
+            {l:'B2', t:'Modals of Deduction', q:'He ___ be at home; his lights are off.', o:['must','can\'t','shouldn\'t','might'], a:1},
+            {l:'B2', t:'Advanced Passive', q:'It is ___ that he is rich.', o:['say','said','telling','told'], a:1},
+            {l:'B2', t:'Participle Clauses', q:'___ by the noise, he woke up.', o:['Scaring','Scared','Scare','To scare'], a:1},
+            {l:'B2', t:'Subjunctive', q:'It is essential that he ___ on time.', o:['be','is','will be','was'], a:0},
+            {l:'B2', t:'Future Continuous', q:'This time tomorrow, I ___ flying.', o:['will','am','will be','would be'], a:2},
+            {l:'B2', t:'Unless', q:'I won\'t go ___ you go.', o:['if','unless','providing','as long as'], a:1},
+            {l:'B2', t:'Whatever', q:'___ you do, don\'t touch that.', o:['However','Whatever','Whenever','Whoever'], a:1}
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let answers = [];
+        let studentName = "";
+        let finalLevelResult = "A1";
+
+        function startQuiz() {
+            studentName = document.getElementById('studentNameInput').value;
+            if(!studentName) { alert('Por favor, ingresa tu nombre completo para iniciar.'); return; }
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('q-current').innerText = currentQ + 1;
+            document.getElementById('question-level').innerText = "NIVEL " + q.l;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const cont = document.getElementById('options-container');
+            cont.innerHTML = '';
+            
+            q.o.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(idx);
+                cont.appendChild(btn);
+            });
+
+            document.getElementById('progress').style.width = ((currentQ / 60) * 100) + '%';
+        }
+
+        function handleAnswer(idx) {
+            const q = questions[currentQ];
+            const isCorrect = (idx === q.a);
+            answers.push({ l: q.l, t: q.t, correct: isCorrect });
+            if(isCorrect) score++;
+
+            currentQ++;
+            if(currentQ < questions.length) {
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-results').classList.remove('hidden');
+            document.getElementById('progress').style.width = '100%';
+            
+            // Lógica de Niveles
+            const a1_score = answers.filter(a => a.l === 'A1' && a.correct).length;
+            const a2_score = answers.filter(a => a.l === 'A2' && a.correct).length;
+            const b1_score = answers.filter(a => a.l === 'B1' && a.correct).length;
+            const b2_score = answers.filter(a => a.l === 'B2' && a.correct).length;
+
+            let level = "A1";
+            let rec = "Se requiere iniciar el Plan Standard desde cero para construir bases.";
+            if(a1_score >= 12) {
+                level = "A2";
+                rec = "Bases sólidas. Iniciar en nivel A2 acelerado.";
+                if(a2_score >= 12) {
+                    level = "B1";
+                    rec = "Candidato a Plan Smart Pro. Nivel intermedio.";
+                    if(b1_score >= 10) {
+                        level = "B2";
+                        rec = "Nivel avanzado. Candidato ideal para Master Executive.";
+                    }
+                }
+            }
+            finalLevelResult = level;
+
+            // Mostrar en pantalla
+            document.getElementById('final-score').innerText = score + "/60";
+            document.getElementById('final-level').innerText = level;
+
+            // Rellenar PDF oculto
+            document.getElementById('pdf-student-name').innerText = studentName;
+            document.getElementById('pdf-date').innerText = new Date().toLocaleDateString();
+            document.getElementById('pdf-score').innerText = score + "/60";
+            document.getElementById('pdf-level').innerText = level;
+            document.getElementById('pdf-a1').innerText = a1_score + "/15";
+            document.getElementById('pdf-a2').innerText = a2_score + "/15";
+            document.getElementById('pdf-b1').innerText = b1_score + "/15";
+            document.getElementById('pdf-b2').innerText = b2_score + "/15";
+            document.getElementById('pdf-recommendation').innerText = rec;
+
+            // Errores
+            const errorsList = document.getElementById('pdf-errors');
+            errorsList.innerHTML = '';
+            const incorrect = answers.filter(a => !a.correct);
+            if(incorrect.length === 0) {
+                errorsList.innerHTML = "<li>Sin errores significativos.</li>";
+            } else {
+                let topicCounts = {};
+                incorrect.forEach(inc => { topicCounts[inc.t] = (topicCounts[inc.t] || 0) + 1; });
+                const sortedErrors = Object.entries(topicCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                sortedErrors.forEach(([topic, count]) => {
+                    const li = document.createElement('li');
+                    li.innerText = `${topic} (${count} fallos)`;
+                    errorsList.appendChild(li);
+                });
+            }
+
+            // --- ENVÍO AUTOMÁTICO AL BACKEND ---
+            sendReportToBackend(level);
+        }
+
+        async function sendReportToBackend(level) {
+            const statusText = document.getElementById('upload-status');
+            statusText.innerText = "Generando y enviando reporte...";
+            
+            try {
+                // 1. Generar PDF en Base64 sin descargar
+                const element = document.getElementById('pdf-report');
+                element.style.display = 'block'; 
+                const opt = { margin: 0.5, filename: 'report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+                
+                const pdfDataUri = await html2pdf().set(opt).from(element).outputPdf('datauristring');
+                element.style.display = 'none';
+
+                const pdfBase64 = pdfDataUri.split(',')[1]; // Limpiar encabezado
+
+                // 2. Enviar a Netlify Function
+                const response = await fetch('/.netlify/functions/send-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        studentName: studentName,
+                        level: level,
+                        score: score,
+                        pdfBase64: pdfBase64
+                    })
+                });
+
+                if (response.ok) {
+                    statusText.innerText = "✅ Reporte enviado exitosamente al sistema.";
+                    statusText.classList.add('text-green-500');
+                } else {
+                    console.error("Error backend:", await response.text());
+                    statusText.innerText = "⚠️ Resultados guardados localmente (Error de conexión).";
+                }
+            } catch (error) {
+                console.error("Error crítico:", error);
+                statusText.innerText = "⚠️ Error al procesar el envío.";
+            }
+        }
+
+        function downloadReport() {
+            const element = document.getElementById('pdf-report');
+            element.style.display = 'block';
+            const opt = { margin: 0.5, filename: `Grammar_DX_${studentName.replace(/\s+/g,'_')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
+        }
+
+        function copyResultToken() {
+            const textToCopy = `Evaluación Gramatical: Nivel ${finalLevelResult} | Score: ${score}/60`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.getElementById('btn-copy-token');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> COPIADO';
+                setTimeout(() => btn.innerHTML = original, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

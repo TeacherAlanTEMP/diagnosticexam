@@ -1,0 +1,10 @@
+{
+  "name": "temp-serverless-functions",
+  "version": "1.0.0",
+  "description": "Backend logic for TEMP Ecosystem",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "resend": "^3.2.0"
+  }
+}
