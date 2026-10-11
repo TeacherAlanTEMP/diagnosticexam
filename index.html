@@ -1,361 +1,300 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEMP | Grammar Deep Scan v2.1</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root { --temp-navy: #0a192f; --temp-gold: #d4af37; --temp-light-navy: #112240; --temp-text: #ccd6f6; }
-        body { background-color: var(--temp-navy); color: var(--temp-text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .option-btn { background-color: #112240; border: 1px solid #233554; padding: 0.8rem; border-radius: 0.5rem; width: 100%; text-align: left; transition: all 0.2s; color: #ccd6f6; font-size: 0.95rem; }
-        .option-btn:hover { border-color: var(--temp-gold); background-color: #1a365d; }
-        .progress-bar { height: 6px; background-color: #233554; width: 100%; position: fixed; top: 0; left: 0; z-index: 50; }
-        .progress-fill { height: 100%; background-color: var(--temp-gold); width: 0%; transition: width 0.3s; }
-        #pdf-report { background: white; color: black; padding: 40px; display: none; }
-        .pdf-row { border-bottom: 1px solid #ddd; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inglés Para Ti | Examen de nivel</title>
+<meta name="description" content="Descubre tu punto de partida en inglés con un examen corto de gramática, sin presión.">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{--bg:#FFF8EE;--teal:#0F4C5C;--coral:#E4572E;--mus:#F2A900;--mut:#5b6b70;--line:#eadfce;--soft:#fff3ea}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;min-height:100dvh;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;background:var(--bg);color:var(--teal);font:400 16px/1.6 Nunito,system-ui,sans-serif;display:flex;justify-content:center;padding:28px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+main{width:100%;max-width:680px}
+.logo{display:block;width:240px;max-width:70%;height:auto;margin:0 0 18px 4px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(15,76,92,.08)}
+h1,h2{margin:.2em 0 .4em;line-height:1.2}h1{font-size:clamp(1.7rem,5vw,2.3rem)}h2{font-size:1.3rem}
+p{color:var(--mut);margin:0 0 1em}
+.btn{-webkit-appearance:none;appearance:none;display:block;width:100%;border:0;border-radius:14px;padding:15px 20px;font:800 1rem Nunito,sans-serif;cursor:pointer;background:var(--coral);color:#fff;text-align:center;text-decoration:none;margin-top:12px}
+.btn.s{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.btn.g{background:none;color:var(--mut);font-weight:600;padding:8px;margin-top:4px}
+.btn:focus-visible,input:focus-visible,.opt:focus-visible{outline:3px solid var(--mus);outline-offset:2px}
+@media(hover:hover){.btn:hover{filter:brightness(.93)}.opt:hover{border-color:var(--coral);background:var(--soft)}}
+input[type=text],input[type=tel]{-webkit-appearance:none;appearance:none;width:100%;padding:14px;border:2px solid var(--line);border-radius:12px;font:inherit;color:var(--teal);background:#fff;margin-bottom:12px}
+.ex{display:grid;gap:12px;margin:18px 0 8px}.ex label{cursor:pointer;position:relative}.ex input{position:absolute;opacity:0}
+.ex div{border:2px solid var(--line);border-radius:14px;padding:14px 16px}.ex input:checked+div{border-color:var(--coral);background:var(--soft)}.ex input:focus-visible+div{outline:3px solid var(--mus)}
+.ex b{display:block}.ex span{font-size:.88rem;color:var(--mut)}
+.top{display:flex;justify-content:space-between;font-size:.82rem;font-weight:800;color:var(--mut)}
+.q{font-size:1.5rem;font-weight:800;margin:14px 0 22px}
+.opt{-webkit-appearance:none;appearance:none;display:flex;align-items:center;width:100%;text-align:left;padding:14px;margin-bottom:10px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--teal);font:600 1rem Nunito,sans-serif;cursor:pointer}
+.opt i{margin-right:12px;flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font:800 .85rem Nunito,sans-serif}
+.opt.on{border-color:var(--coral);background:var(--soft)}
+#bar{position:fixed;top:0;left:0;height:6px;width:0;background:var(--coral);transition:width .3s;z-index:9}
+.res{text-align:center}.big{font-size:2.6rem;font-weight:800;line-height:1.1}
+.chip{display:inline-block;background:var(--teal);color:#fff;border-radius:30px;padding:6px 22px;font:800 1.5rem Nunito,sans-serif;margin:6px 0 14px}
+.row{display:flex;justify-content:space-between;font-weight:800;font-size:.9rem;margin:12px 0 4px}
+.bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--mus)}
+.left{text-align:left;margin-top:22px}.left ul{margin:0;padding-left:20px;color:var(--mut)}
+.note{font-size:.8rem;color:var(--mut);margin-top:16px}
+#st,#err{font-size:.9rem;min-height:1.4em;margin:10px 0 0}#err{color:var(--coral);font-weight:600}
+[hidden]{display:none!important}
+#pdf{display:none;background:#fff;color:#0F4C5C;font-family:Nunito,Arial,sans-serif;box-sizing:border-box}
+</style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body>
+<div id="bar"></div>
+<main>
+<img id="lg" class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjE2OSAxNzIgMjI3NiA3MjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iSW5nbMOpcyBwYXJhIHRpIj4KPHRpdGxlPkluZ2zDqXMgcGFyYSB0aTwvdGl0bGU+CjxwYXRoIGZpbGw9IiNFNDU3MkUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTE2ODAuOCw4NDcuNUMxNjc0LjYsODQ0LjAgMTY3NS44LDgzOS44IDE2ODcuMiw4MjQuNUMxNzA3LjgsNzk2LjkgMTcyMC44LDc2My4yIDE3MjMuNSw3MzAuN0MxNzI0LjIsNzIyLjQgMTcyMi41LDcyMC4yIDE3MTIuOSw3MTcuMUMxNjg5LjQsNzA5LjYgMTY2NS40LDY5Ny4zIDE2MzkuMCw2NzkuMUMxNjIwLjAsNjY2LjEgMTU5OC43LDY0NC4zIDE1ODguNSw2MjcuNEMxNTcyLjEsNjAwLjIgMTU2NC43LDU4Mi4xIDE1NTguMSw1NTMuMEMxNTUxLjYsNTI0LjIgMTU1MS41LDUyMy4zIDE1NTEuNSw0ODQuMEMxNTUxLjUsNDU3LjQgMTU1MS45LDQ0NS45IDE1NTIuOSw0NDEuNUMxNTUzLjYsNDM4LjIgMTU1NC44LDQzMi4xIDE1NTUuNiw0MjguMEMxNTU2LjksNDIxLjEgMTU1OS42LDQxMC43IDE1NjMuNCwzOTguNUMxNTc3LjksMzUxLjMgMTYwOS4wLDMxMi41IDE2NTcuNSwyODAuOEMxNjgyLjYsMjY0LjUgMTY5OC4yLDI1Ni4xIDE3MTkuMCwyNDguMEMxNzIxLjUsMjQ3LjAgMTcyNi40LDI0NS4wIDE3MzAuMCwyNDMuNkMxNzM3LjIsMjQwLjYgMTc1OC43LDIzMy40IDE3NjkuNSwyMzAuM0MxNzg3LjcsMjI1LjAgMTgyNC40LDIxNi43IDE4MzUuMCwyMTUuNUMxODM4LjAsMjE1LjEgMTg0Mi4yLDIxNC40IDE4NDQuMiwyMTMuOUMxODU4LjksMjEwLjEgMTkyMS41LDIwNC4zIDE5NjAuMiwyMDMuMEMxOTkwLjQsMjAyLjAgMjA0MS40LDIwMy4xIDIwNTkuMCwyMDUuMEMyMDYzLjcsMjA1LjUgMjA3Mi43LDIwNi40IDIwNzkuMCwyMDcuMEMyMTI0LjgsMjExLjIgMjE3My4wLDIyMC40IDIxOTkuOCwyMzAuMUMyMjAyLjgsMjMxLjEgMjIwNS44LDIzMi4wIDIyMDYuNiwyMzIuMEMyMjA4LjQsMjMyLjAgMjIyNi41LDIzOC45IDIyMzkuNiwyNDQuNkMyMjQ1LjIsMjQ3LjAgMjI1MC4wLDI0OS4wIDIyNTAuNCwyNDkuMEMyMjUxLjgsMjQ5LjAgMjI4MS4wLDI2My45IDIyOTEuMiwyNjkuOEMyMzI4LjQsMjkxLjMgMjM1NC4xLDMxNC40IDIzNzUuMSwzNDUuNUMyNDA0LjcsMzg5LjAgMjQxNS40LDQyNi40IDI0MTUuNSw0ODYuMEMyNDE1LjYsNTkyLjAgMjM3MC40LDY2My43IDIyNzUuNCw3MDguMkMyMjU0LjMsNzE4LjIgMjIzMC41LDcyOC4wIDIyMjcuNyw3MjguMEMyMjI3LjAsNzI4LjAgMjIyMy43LDcyOC45IDIyMjAuNCw3MjkuOUMyMjExLjUsNzMyLjggMjIwMS4wLDczNS43IDIxOTYuMCw3MzYuOUMyMTkzLjUsNzM3LjQgMjE4OS43LDczOC4zIDIxODcuNSw3MzguOUMyMTU0LjksNzQ3LjEgMjExNi41LDc1Mi43IDIwNTkuMCw3NTcuN0MyMDE5LjAsNzYxLjIgMTkwOS40LDc1OC45IDE4ODMuNCw3NTQuMUMxODYyLjksNzUwLjMgMTg2Mi4wLDc1MC42IDE4NDcuMiw3NjYuMEMxODExLjksODAyLjggMTc3Mi4xLDgyNy4yIDE3MjMuNSw4NDEuOEMxNzAzLjUsODQ3LjkgMTY4NS43LDg1MC4yIDE2ODAuOCw4NDcuNVpNMjAxLjcsODMzLjNDMTk1LjgsODI2LjcgMjA5LjcsODE2LjEgMjM1LjUsODA3LjVDMjM3LjcsODA2LjcgMjQ0LjcsODA0LjMgMjUxLjAsODAyLjBDMjYxLjEsNzk4LjQgMjkzLjUsNzg3LjYgMzEwLjUsNzgyLjFDMzIwLjUsNzc4LjkgMzM3LjAsNzc0LjIgMzUzLjAsNzcwLjFDMzg2LjYsNzYxLjQgMzg5LjEsNzYwLjggMzk0LjAsNzYwLjBDMzk2LjUsNzU5LjYgNDAxLjAsNzU4LjUgNDA0LjAsNzU3LjdDNDA5LjEsNzU2LjMgNDEzLjIsNzU1LjQgNDM4LjUsNzUwLjBDNDQzLjQsNzQ4LjkgNDUxLjYsNzQ3LjEgNDU2LjcsNzQ2LjBDNDYxLjcsNzQ0LjkgNDY2LjYsNzQ0LjAgNDY3LjUsNzQ0LjBDNDY4LjQsNzQ0LjAgNDczLjAsNzQzLjEgNDc3LjgsNzQyLjFDNDgyLjYsNzQxLjAgNDkxLjQsNzM5LjIgNDk3LjUsNzM4LjFDNTAzLjYsNzM2LjkgNTEzLjAsNzM1LjEgNTE4LjUsNzM0LjBDNTQxLjMsNzI5LjYgNTQ1LjksNzI4LjcgNTU0LjUsNzI3LjVDNTY0LjQsNzI2LjEgNTc4LjEsNzIzLjggNTkwLjUsNzIxLjVDNjAwLjYsNzE5LjcgNjI0LjUsNzE2LjMgNjMzLjAsNzE1LjVDNjM2LjYsNzE1LjEgNjQxLjMsNzE0LjQgNjQzLjYsNzEzLjlDNjQ1LjgsNzEzLjUgNjUyLjgsNzEyLjYgNjU5LjEsNzEyLjBDNjY1LjQsNzExLjQgNjc0LjEsNzEwLjMgNjc4LjYsNzA5LjVDNjgzLjAsNzA4LjcgNjkxLjksNzA3LjggNjk4LjMsNzA3LjRDNzEyLjgsNzA2LjUgNzEyLjksNzA2LjkgNzAzLjMsNzE5LjJDNjk5LjUsNzI0LjAgNjk0LjIsNzMxLjAgNjkxLjUsNzM0LjlDNjg0LjMsNzQ1LjIgNjgxLjUsNzQ2LjMgNjU3LjAsNzQ4LjVDNjUyLjksNzQ4LjggNjQ3LjcsNzQ5LjUgNjQ1LjQsNzUwLjBDNjQzLjEsNzUwLjUgNjM1LjksNzUxLjQgNjI5LjQsNzUyLjBDNjIyLjksNzUyLjYgNjEzLjksNzUzLjcgNjA5LjUsNzU0LjVDNjA1LjEsNzU1LjIgNTk4LjQsNzU2LjIgNTk0LjUsNzU2LjVDNTkwLjYsNzU2LjkgNTg1LjcsNzU3LjUgNTgzLjUsNzU4LjBDNTgxLjMsNzU4LjUgNTc0LjUsNzU5LjQgNTY4LjUsNzYwLjBDNTYyLjUsNzYwLjYgNTUzLjcsNzYxLjcgNTQ5LjAsNzYyLjVDNTQ0LjMsNzYzLjMgNTM0LjYsNzY0LjggNTI3LjUsNzY1LjlDNTIwLjQsNzY3LjAgNTExLjQsNzY4LjQgNTA3LjUsNzY5LjBDNTAzLjYsNzY5LjYgNDk2LjAsNzcwLjggNDkwLjUsNzcxLjZDNDg1LjAsNzcyLjQgNDc3LjEsNzczLjcgNDczLjAsNzc0LjVDNDY4LjksNzc1LjIgNDYyLjYsNzc2LjQgNDU5LjAsNzc3LjBDNDU1LjQsNzc3LjcgNDQ4LjIsNzc5LjEgNDQzLjAsNzgwLjFDNDM3LjgsNzgxLjIgNDI5LjAsNzgyLjkgNDIzLjUsNzgzLjlDNDA0LjIsNzg3LjYgMzkzLjUsNzg5LjggMzg5LjAsNzkwLjhDMzg0LjYsNzkxLjggMzc1LjMsNzkzLjkgMzU1LjUsNzk4LjFDMzQ2LjYsODAwLjAgMzM4LjYsODAxLjggMzE4LjUsODA2LjVDMzAwLjQsODEwLjcgMjc3LjYsODE2LjMgMjcxLjUsODE4LjBDMjU5LjgsODIxLjIgMjUwLjcsODIzLjcgMjQ2LjAsODI0LjlDMjQzLjUsODI1LjUgMjM3LjIsODI3LjIgMjMyLjAsODI4LjZDMjIyLjUsODMxLjIgMjEyLjIsODMzLjYgMjA2LjUsODM0LjZDMjA0LjMsODM1LjAgMjAzLjAsODM0LjcgMjAxLjcsODMzLjNaTTE0NTEuNSw3NzkuNUMxNDQ4LjIsNzc4LjggMTQ0Mi44LDc3Ny43IDE0MzkuNSw3NzcuMUMxNDM2LjIsNzc2LjUgMTQzMC4zLDc3NS4zIDE0MjYuNSw3NzQuNEMxNDE1LjcsNzcyLjEgMTQwNC4zLDc2OS45IDEzOTYuMCw3NjguNUMxMzkxLjksNzY3LjggMTM4NC45LDc2Ni42IDEzODAuNSw3NjUuN0MxMzcwLjEsNzYzLjcgMTM1MC41LDc2MC40IDEzNDEuMCw3NTkuMEMxMzM2LjksNzU4LjQgMTMyNy45LDc1Ny4xIDEzMjEuMCw3NTYuMEMxMzE0LjEsNzU0LjkgMTMwNC43LDc1My41IDEzMDAuMCw3NTMuMEMxMjk1LjMsNzUyLjQgMTI4Ny4wLDc1MS4zIDEyODEuNSw3NTAuNUMxMjc2LjAsNzQ5LjcgMTI2Ny41LDc0OC42IDEyNjIuNSw3NDguMUMxMjU0LjIsNzQ3LjIgMTI0Mi4zLDc0NS44IDEyMTguNSw3NDMuMEMxMjEzLjUsNzQyLjQgMTIwMS42LDc0MS4zIDExOTIuMCw3NDAuNUMxMTgyLjQsNzM5LjcgMTE3MC4yLDczOC42IDExNjUuMCw3MzguMUMxMTU5LjgsNzM3LjUgMTE0Ny4wLDczNi42IDExMzYuNSw3MzYuMEMxMTI2LjAsNzM1LjQgMTExMy4wLDczNC41IDExMDcuNSw3MzQuMEMxMDk2LjMsNzMyLjkgMTA1Ny43LDczMS40IDEwMTguNSw3MzAuNUMxMDA0LjIsNzMwLjIgOTcxLjgsNzMwLjQgOTQ2LjUsNzMwLjlDODkxLjQsNzMyLjEgODk2LjYsNzMzLjggOTAwLjgsNzE2LjNDOTAyLjUsNzA5LjMgOTA0LjIsNzAxLjggOTA0LjUsNjk5LjhDOTA1LjgsNjkxLjUgOTAwLjgsNjkyLjAgOTgyLjQsNjkyLjBDMTAyMi4wLDY5Mi4xIDEwNjUuMyw2OTIuNSAxMDc4LjUsNjkzLjBDMTEyMi4yLDY5NC42IDExNTMuMyw2OTYuMCAxMTY3LjAsNjk3LjFDMTIwNC41LDY5OS44IDEyMjAuMCw3MDEuMSAxMjI1LjUsNzAxLjlDMTIyOC44LDcwMi40IDEyMzUuMyw3MDMuMSAxMjQwLjAsNzAzLjVDMTI0NC43LDcwMy44IDEyNTQuMSw3MDQuNyAxMjYxLjAsNzA1LjVDMTI2Ny45LDcwNi4zIDEyNzcuMSw3MDcuNCAxMjgxLjUsNzA3LjlDMTI4NS45LDcwOC40IDEyOTMuOCw3MDkuNSAxMjk5LjAsNzEwLjRDMTMwNC4yLDcxMS4yIDEzMTIuMSw3MTIuNCAxMzE2LjUsNzEzLjBDMTMzNi40LDcxNS43IDEzNDUuNyw3MTcuMSAxMzUyLjgsNzE4LjRDMTM1Ny4wLDcxOS4yIDEzNjUuOSw3MjAuOCAxMzcyLjUsNzIyLjBDMTM3OS4xLDcyMy4yIDEzODcuNyw3MjQuOCAxMzkxLjUsNzI1LjZDMTM5NS40LDcyNi40IDE0MDIuNiw3MjcuNyAxNDA3LjUsNzI4LjVDMTQyMS43LDczMC44IDE0MzYuOCw3MzMuOCAxNDM3LjgsNzM0LjRDMTQzOC40LDczNC43IDE0NDEuNiw3MzUuNCAxNDQ1LjEsNzM1LjlDMTQ3My44LDc0MC4zIDE0ODMuMCw3NDYuMCAxNDgzLjAsNzU5LjJDMTQ4My4wLDc3NS4wIDE0NjkuOCw3ODMuNCAxNDUxLjUsNzc5LjVaIi8+CjxwYXRoIGZpbGw9IiNGRkY4RUUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTE2NTIuMyw2MDYuMEMxNjQ1LjQsNjAxLjggMTY0NS44LDYwNi4zIDE2NDUuNiw1MTcuMkMxNjQ1LjMsNDI2LjMgMTY0NC43LDQzMy45IDE2NTMuNCw0MjkuOUMxNjU5LjUsNDI3LjEgMTY3MS4wLDQyOS44IDE2NzEuMCw0MzQuMEMxNjcxLjAsNDM5LjAgMTY3Ni42LDQzOS44IDE2ODIuMSw0MzUuN0MxNzI1LjksNDAyLjUgMTc3NC4wLDQ2MC42IDE3NTMuMCw1MjEuNEMxNzQyLjYsNTUxLjggMTcwNS40LDU2Ni40IDE2ODMuMiw1NDkuMEMxNjc2LjcsNTQzLjggMTY3Ni4wLDU0Ni4yIDE2NzYuMCw1NzQuOUMxNjc2LjAsNTk4LjYgMTY3NS45LDU5OS45IDE2NzMuOSw2MDIuNEMxNjY5LjQsNjA4LjIgMTY1OC43LDYxMC4wIDE2NTIuMyw2MDYuMFpNMTgxMC45LDU1NS4xQzE3NzYuNiw1NDQuMSAxNzYyLjUsNDk3LjAgMTc4MS41LDQ1Ni40QzE3OTMuOCw0MzAuMSAxODIxLjYsNDE5LjkgMTg0Ny4xLDQzMi40QzE4NTUuOSw0MzYuOCAxODU0LjksNDM2LjcgMTg2MC4wLDQzMi41QzE4NjYuOCw0MjYuOCAxODc1LjYsNDI2LjggMTg4MS4xLDQzMi42QzE4ODMuNSw0MzUuMiAxODgzLjUsNDM1LjIgMTg4My41LDQ3Ni44QzE4ODMuNSw1MTAuMCAxODgzLjgsNTE5LjEgMTg4NC45LDUyMS41QzE4OTcuMiw1NDguNSAxODgwLjEsNTY3LjAgMTg2MC44LDU0Ny44QzE4NTUuMCw1NDIuMSAxODU0LjEsNTQyLjAgMTg0OS4xLDU0Ni41QzE4NDAuNSw1NTQuMyAxODIxLjYsNTU4LjUgMTgxMC45LDU1NS4xWk0yMDM4LjAsNTU1LjRDMTk4Ni43LDU0NS41IDE5ODEuNCw0NTEuNSAyMDMxLjAsNDMxLjNDMjA0Ni4yLDQyNS4wIDIwNjMuOSw0MjYuNSAyMDc0LjcsNDM1LjBDMjA3OC4yLDQzNy43IDIwNzkuNCw0MzcuNiAyMDgzLjcsNDMzLjZDMjA5MS4xLDQyNy4wIDIxMDEuMiw0MjYuNiAyMTA1LjksNDMyLjdDMjEwNy45LDQzNS4yIDIxMDguMCw0MzYuNCAyMTA4LjAsNDc2LjZDMjEwOC4wLDUxNC41IDIxMDguMiw1MTguNSAyMTA5LjksNTIzLjdDMjExMy4zLDUzNC4xIDIxMTQuMyw1MzguOSAyMTEzLjcsNTQyLjZDMjExMS41LDU1Ni4xIDIwOTMuMyw1NTkuMiAyMDg0LjUsNTQ3LjZDMjA4MC4wLDU0MS42IDIwNzguOSw1NDEuNSAyMDczLjEsNTQ2LjFDMjA2NC4xLDU1My4zIDIwNDguNSw1NTcuNCAyMDM4LjAsNTU1LjRaTTIyMjYuMiw1NTQuNUMyMjA1LjcsNTQ4LjcgMjIwMi40LDU0MC4wIDIyMDEuNiw0ODkuMUMyMjAxLjAsNDU2LjMgMjIwMC45LDQ1Ni4wIDIxOTQuMyw0NTYuMEMyMTg5LjksNDU2LjAgMjE4NS43LDQ1My44IDIxODMuMCw0NTAuMEMyMTc2LjUsNDQwLjkgMjE4Mi44LDQyOS4wIDIxOTQuMiw0MjkuMEMyMjAwLjQsNDI5LjAgMjIwMi4wLDQyNi4xIDIyMDIuMCw0MTQuOEMyMjAyLjEsMzk5LjAgMjIwNC40LDM5NC4yIDIyMTMuNiwzOTEuM0MyMjI3LjMsMzg3LjAgMjIzMy4wLDM5Mi45IDIyMzMuMCw0MTEuNEMyMjMzLjAsNDI4LjcgMjIzMi44LDQyOC4zIDIyNDUuOSw0MjkuMEMyMjU5LjIsNDI5LjcgMjI2Mi41LDQzMi4zIDIyNjIuNSw0NDIuMEMyMjYyLjUsNDUxLjcgMjI1OS4yLDQ1NC4zIDIyNDUuOSw0NTUuMEMyMjMyLjUsNDU1LjcgMjIzMy40LDQ1My44IDIyMzIuNiw0ODMuM0MyMjMxLjQsNTI0LjIgMjIzMy43LDUzMC4xIDIyNTAuNSw1MjguNkMyMjY3LjUsNTI3LjEgMjI3MC44LDU0Ni44IDIyNTQuNyw1NTMuNUMyMjQ5LjEsNTU1LjggMjIzMi45LDU1Ni40IDIyMjYuMiw1NTQuNVpNMTkyMS4wLDU1My4yQzE5MTMuNSw1NDkuMSAxOTEzLjYsNTQ5LjkgMTkxMi45LDQ5MC41QzE5MTIuMSw0MzEuNCAxOTExLjksNDMzLjYgMTkxOS4wLDQyOS45QzE5MjYuOSw0MjUuNiAxOTQxLjAsNDMxLjIgMTk0MS4wLDQzOC41QzE5NDEuMCw0NDAuMSAxOTQzLjcsNDQzLjAgMTk0NS4xLDQ0My4wQzE5NDUuNyw0NDMuMCAxOTQ4LjUsNDQwLjggMTk1MS40LDQzOC4wQzE5NjcuOSw0MjIuNCAxOTkxLjksNDI0LjIgMTk5MS40LDQ0MS4wQzE5OTEuMCw0NTMuNiAxOTg2LjMsNDU4LjYgMTk3NS41LDQ1OC4yQzE5NTIuMSw0NTcuMyAxOTQ1LjIsNDcwLjUgMTk0NC4zLDUxNy41QzE5NDMuNyw1NDkuMSAxOTQzLjUsNTUwLjAgMTkzNi43LDU1My4xQzE5MzEuNCw1NTUuNSAxOTI1LjQsNTU1LjUgMTkyMS4wLDU1My4yWk0yMjkyLjUsNTUzLjZDMjI4My4zLDU0OS40IDIyODMuMCw1NDcuOSAyMjgzLjAsNDkwLjBDMjI4My4wLDQ0NC41IDIyODMuMiw0NDEuMiAyMjg0LjksNDM3LjNDMjI4OS44LDQyNi42IDIzMDcuMCw0MjYuMSAyMzEyLjQsNDM2LjZDMjMxNS43LDQ0Mi43IDIzMTUuNiw1NDMuMyAyMzEyLjQsNTQ3LjZDMjMwNy42LDU1NC4xIDIyOTkuMSw1NTYuNyAyMjkyLjUsNTUzLjZaTTE3MTMuMSw1MjUuNUMxNzM1LjIsNTA5LjkgMTcyOS41LDQ1Ni4yIDE3MDUuNSw0NTQuMkMxNjgzLjQsNDUyLjQgMTY2OS43LDQ4Mi4wIDE2NzguOSw1MTEuOEMxNjgzLjcsNTI3LjYgMTcwMC42LDUzNC4zIDE3MTMuMSw1MjUuNVpNMTgzOS41LDUyNS42QzE4NTguNSw1MTQuNCAxODU5LjcsNDY1LjIgMTg0MS4xLDQ1NS44QzE4MTYuOCw0NDMuNCAxNzk3LjUsNDc0LjQgMTgwNy4xLDUxMC4yQzE4MTEuNiw1MjYuNyAxODI2LjAsNTMzLjUgMTgzOS41LDUyNS42Wk0yMDYxLjksNTI2LjVDMjA3OC4yLDUxOC4wIDIwODQuMyw0NzMuOCAyMDcxLjAsNDYwLjFDMjA1Ni45LDQ0NS42IDIwMzYuMCw0NTMuOSAyMDMwLjQsNDc2LjNDMjAyMi4yLDUwOC42IDIwNDAuNSw1MzcuOCAyMDYxLjksNTI2LjVaTTIyOTMuNSw0MDkuOEMyMjc3LjYsNDAzLjkgMjI3NS4yLDM4My4zIDIyODkuNywzNzYuNUMyMzAxLjcsMzcwLjggMjMxNC41LDM3Ni4wIDIzMTguMSwzODcuOUMyMzIxLjksNDAwLjggMjMwNi40LDQxNC42IDIyOTMuNSw0MDkuOFoiLz4KPHBhdGggZmlsbD0iIzBGNEM1QyIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNzQwLjksODYxLjFDNjk5LjksODUwLjEgNjg4LjcsODAyLjUgNzE1LjcsNzU0LjVDNzI3LjIsNzM0LjEgNzQ5LjgsNzA3LjcgNzcyLjEsNjg4LjVDNzc3LjEsNjg0LjEgNzg1LjUsNjc2LjggNzkwLjcsNjcyLjJDNzk1LjgsNjY3LjcgODA3LjYsNjU3LjkgODE2LjksNjUwLjVDODM2LjUsNjM0LjkgODM2LjgsNjM0LjQgODM4LjUsNjIzLjFDODQzLjMsNTkxLjUgODQ1LjgsNTY0LjQgODQ0LjAsNTYyLjZDODQyLjUsNTYxLjEgODQxLjcsNTYyLjIgODM0LjcsNTc2LjBDODA5LjUsNjI1LjcgNzc5LjgsNjQ3LjkgNzQ4LjQsNjQwLjVDNzMyLjYsNjM2LjggNzE4LjIsNjIyLjggNzExLjksNjA1LjBDNzA5LjYsNTk4LjUgNzA3LjYsNTk5LjAgNzAxLjQsNjA4LjBDNjcxLjYsNjUxLjAgNjMyLjMsNjYyLjAgNjA0LjksNjM1LjBDNTkwLjQsNjIwLjcgNTg3LjYsNjExLjkgNTg3LjYsNTc5LjVDNTg3LjUsNTU1LjAgNTg3LjcsNTUyLjggNTkzLjEsNTI1LjVDNTkzLjYsNTIyLjggNTk0LjcsNTE2LjIgNTk1LjYsNTExLjBDNTk2LjQsNTA1LjggNTk3LjUsNDk5LjkgNTk4LjEsNDk4LjBDNTk5LjgsNDkyLjIgNjAwLjMsNDY3LjkgNTk4LjgsNDY1LjFDNTk0LjQsNDU3LjAgNTg5LjEsNDU3LjUgNTgwLjAsNDY2LjhDNTc0LjMsNDcyLjcgNTcxLjMsNDc2LjcgNTYxLjQsNDkyLjBDNTU3LjEsNDk4LjcgNTQ5LjQsNTEyLjUgNTQ1LjgsNTIwLjBDNTM1LjksNTQwLjkgNTMyLjksNTQ3LjQgNTMxLjYsNTUwLjhDNTMwLjgsNTUyLjggNTI5LjIsNTU3LjAgNTI4LjAsNTYwLjBDNTI2LjgsNTYzLjAgNTI1LjIsNTY3LjMgNTI0LjQsNTY5LjVDNTIzLjcsNTcxLjcgNTIxLjksNTc2LjYgNTIwLjUsNTgwLjVDNTE1LjEsNTk1LjAgNTEwLjUsNjEwLjIgNTA1LjUsNjMwLjBDNTAwLjgsNjQ4LjMgNDkyLjUsNjUzLjMgNDc0LjgsNjQ4LjRDNDU2LjksNjQzLjMgNDUzLjEsNjMwLjAgNDU3LjAsNTg0LjlDNDYxLjEsNTM1LjYgNDY0LjgsNTAyLjAgNDY5LjEsNDc0LjBDNDY5LjcsNDcwLjQgNDcwLjgsNDYyLjkgNDcxLjUsNDU3LjNDNDc0LjAsNDM5LjUgNDc1LjksNDMwLjEgNDc3LjUsNDI3LjdDNDg2LjgsNDEzLjUgNTE4LjcsNDE3LjMgNTIxLjksNDMzLjFDNTIyLjUsNDM2LjIgNTIwLjIsNDU2LjggNTE4LjAsNDY3LjRDNTE3LjQsNDcwLjEgNTE2LjUsNDc2LjYgNTE2LjAsNDgxLjdDNTE1LjQsNDg2LjkgNTE0LjQsNDk0LjggNTEzLjYsNDk5LjNDNTEwLjIsNTE5LjEgNTA3LjksNTM1LjEgNTA4LjUsNTM2LjBDNTEwLjAsNTM4LjUgNTEwLjYsNTM3LjUgNTE4LjAsNTIwLjJDNTM3LjIsNDc1LjEgNTY4LjgsNDMyLjQgNTkwLjUsNDIyLjRDNjExLjUsNDEyLjcgNjM2LjYsNDIwLjkgNjQ1LjYsNDQwLjVDNjUyLjgsNDU2LjEgNjUyLjcsNDcxLjYgNjQ1LjEsNTE1LjBDNjQ0LjQsNTE4LjYgNjQzLjEsNTI2LjUgNjQyLjAsNTMyLjVDNjM0LjYsNTc0LjkgNjM1LjAsNTk5LjIgNjQzLjIsNjA4LjVDNjUyLjYsNjE5LjMgNjY2LjYsNjEyLjYgNjgxLjMsNTkwLjFDNjk4LjUsNTY0LjEgNzAzLjcsNTUzLjIgNzA5LjEsNTMyLjBDNzIyLjMsNDgwLjEgNzQ4LjYsNDQzLjAgNzg1LjAsNDI0LjVDODEwLjAsNDExLjggODQ0LjAsNDEzLjkgODU4LjUsNDI5LjBDODYyLjMsNDMyLjkgODY0LjksNDMyLjggODY5LjEsNDI4LjRDODc4LjUsNDE4LjUgODk1LjEsNDE4LjggOTA0LjQsNDI5LjBDOTA5LjksNDM1LjEgOTEwLjEsNDM4LjQgOTA2LjEsNDYxLjBDOTAxLjcsNDg1LjIgODk3LjUsNTE2LjEgODk2LjAsNTM0LjBDODk1LjQsNTQwLjkgODk0LjcsNTQ3LjEgODk0LjUsNTQ3LjhDODk0LjIsNTQ4LjUgODkzLjMsNTU1LjkgODkyLjUsNTY0LjNDODkxLjcsNTcyLjcgODkwLjcsNTgwLjkgODkwLjQsNTgyLjZDODg4LjAsNTk1LjcgOTExLjcsNTcwLjQgOTM4LjcsNTMxLjBDOTUwLjgsNTEzLjUgOTUxLjEsNTEyLjUgOTUyLjEsNDkxLjVDOTUyLjUsNDgxLjYgOTUzLjMsNDcwLjQgOTUzLjksNDY2LjVDOTU0LjQsNDYyLjYgOTU1LjEsNDU1LjQgOTU1LjUsNDUwLjVDOTU3LjUsNDIxLjcgOTY4LjMsMzY1LjAgOTc4LjIsMzMxLjVDMTAwMi4xLDI1MC4xIDEwMjkuMiwyMTEuNSAxMDYyLjUsMjExLjVDMTA5My44LDIxMS41IDExMDguMCwyMzguNiAxMTA0LjIsMjkwLjZDMTA5OS4wLDM1OS43IDEwNjQuMiw0MzQuNSAxMDA5LjEsNDk0LjlDOTk5LjgsNTA1LjIgOTk5LjgsNTA1LjIgMTAwMC4yLDUzMS4zQzEwMDIuMSw2MzcuMyAxMDQ4LjYsNjQ0LjkgMTA5NC40LDU0Ni44QzEwOTkuNCw1MzYuMSAxMTAxLjAsNTMxLjUgMTEwNC41LDUxNy41QzExMDkuNyw0OTYuNiAxMTE0LjYsNDg0LjcgMTEyNi41LDQ2NC4xQzExNTcuNyw0MTAuMiAxMjMxLjEsMzk2LjAgMTI1Mi43LDQzOS44QzEyNzIuMSw0NzkuMCAxMjI3LjEsNTM2LjYgMTE2MS41LDU1Ni43QzExNTMuMiw1NTkuMiAxMTUxLjcsNTYxLjMgMTE1Mi40LDU2OS4wQzExNTUuMCw1OTUuMSAxMTcxLjEsNjE0LjQgMTE5MS44LDYxNi41QzEyMjguNyw2MjAuMCAxMjY2LjYsNTg0LjQgMTMwMS40LDUxMy41QzEzMTcuNSw0ODAuOCAxMzE2LjYsNDgzLjMgMTMxNC41LDQ3Ny41QzEzMDAuNSw0MzguMSAxMzEyLjEsNDAzLjkgMTM0NC4xLDM5MC41QzEzNzMuMiwzNzguMiAxMzg2LjIsNDAwLjYgMTM2OS44LDQzNS4wQzEzNjAuOSw0NTMuNiAxMzYwLjQsNDU1LjggMTM2Mi45LDQ2My4zQzEzNjYuMiw0NzIuOCAxMzc4LjAsNDkwLjggMTM5MC4yLDUwNC42QzEzOTUuOCw1MTAuOSAxNDAyLjQsNTE5LjcgMTQwNy45LDUyOC4zQzE0MTQuMyw1MzguMiAxNDE0LjEsNTM4LjIgMTQzMS4wLDUyNy43QzE0NTMuNiw1MTMuNyAxNDYzLjksNTA2LjAgMTQ3Ni42LDQ5My44QzE0OTEuMCw0NzkuOSAxNDkzLjAsNDc4LjkgMTQ5OC40LDQ4My4xQzE1MTQuNCw0OTUuNyAxNDk1LjIsNTE5LjEgMTQ0NC4wLDU0OS41QzE0MjYuMyw1NjAuMCAxNDI2LjcsNTU5LjUgMTQzMC4yLDU3MC4wQzE0MzcuMSw1OTAuNyAxNDMyLjEsNjIxLjYgMTQxOC43LDY0MS41QzEzNzkuMyw3MDAuMCAxMjkwLjEsNjk1LjAgMTI5OC44LDYzNC43QzEzMDEuOCw2MTMuOCAxMzE5LjQsNTkzLjMgMTM1NC43LDU2OS42QzEzNzAuNCw1NTkuMiAxMzcwLjUsNTYwLjAgMTM1MC4xLDUzMi4wQzEzNDQuMCw1MjMuNyAxMzM5LjksNTE3LjkgMTMzNy4xLDUxMy43QzEzMzQuMiw1MDkuMyAxMzMxLjMsNTA5LjEgMTMyOS40LDUxMy4wQzEzMjguNyw1MTQuNCAxMzI1LjYsNTIwLjkgMTMyMi41LDUyNy41QzEzMTMuMiw1NDcuMiAxMjk5LjMsNTcxLjAgMTI4NS43LDU5MC40QzEyMzIuNiw2NjYuMSAxMTM0LjUsNjcxLjggMTEwNy42LDYwMC44QzExMDMuNSw1ODkuOSAxMTAxLjYsNTg5LjggMTA5NS4zLDYwMC40QzEwNzQuMSw2MzUuNyAxMDQwLjgsNjU1LjAgMTAxMC41LDY0OS41Qzk3OS40LDY0My45IDk2Mi45LDYyMS41IDk1NC41LDU3My41Qzk1Mi41LDU2Mi4zIDk1MC44LDU1OS4yIDk0OC40LDU2Mi41QzkzNS42LDU4MC4yIDkyNy41LDU4OS4zIDkwNC42LDYxMi4wQzg4NS4xLDYzMS4yIDg4NS41LDYzMC42IDg4NC4wLDY0My41Qzg4My40LDY0OS4wIDg4Mi40LDY1NS40IDg4Mi4wLDY1Ny42Qzg4MS41LDY1OS45IDg4MC42LDY2NS43IDg4MC4xLDY3MC41Qzg3OS41LDY3NS40IDg3OC40LDY4Mi4zIDg3Ny42LDY4NS45Qzg3Ni44LDY4OS41IDg3NS4yLDY5Ny4yIDg3NC4wLDcwMy4wQzg3Mi44LDcwOC44IDg3MS40LDcxNS4zIDg3MC44LDcxNy41Qzg3MC4zLDcxOS43IDg2OS4yLDcyNC4wIDg2OC41LDcyNy4wQzg2Mi41LDc1Mi44IDg0NC4wLDc5Ni41IDgzMC41LDgxNy4wQzgwOS4wLDg0OS43IDc3MC4wLDg2OC44IDc0MC45LDg2MS4xWk03NjguNyw4MjUuOEM3ODEuOSw4MTcuOSA3OTkuNSw3OTEuOSA4MDguNSw3NjcuMEM4MTkuMyw3MzYuOSA4MjEuNyw3MjguMiA4MjkuNSw2OTEuMEM4MzQuNCw2NjcuNiA4MzQuMSw2NjcuNSA4MTMuOSw2ODUuNUM3NjEuNyw3MzEuOSA3NDAuNCw3NjAuOCA3MzQuNSw3OTMuMkM3MzEuMSw4MTIuMCA3MzYuMiw4MjMuOCA3NTAuMCw4MjkuNEM3NTMuOSw4MzAuOSA3NjMuMSw4MjkuMiA3NjguNyw4MjUuOFpNMjA4LjMsNjg5LjlDMTk4LjcsNjgzLjggMTk2LjUsNjY4LjEgMjA0LjEsNjU5LjZDMjA5LjIsNjUzLjcgMjEwLjcsNjUzLjQgMjcwLjAsNjQ2LjRDMjc3LjQsNjQ1LjYgMjg0LjUsNjQ0LjcgMjg1LjcsNjQ0LjRDMjkwLjQsNjQzLjUgMjkwLjcsNjQyLjIgMjkxLjQsNjIxLjNDMjkxLjgsNjEwLjQgMjkyLjYsNTk3LjcgMjkzLjEsNTkzLjBDMjkzLjYsNTg4LjMgMjk0LjcsNTc3LjggMjk1LjYsNTY5LjVDMjk2LjQsNTYxLjIgMjk3LjUsNTUyLjcgMjk4LjAsNTUwLjVDMjk4LjUsNTQ4LjMgMjk5LjEsNTQzLjQgMjk5LjUsNTM5LjVDMjk5LjgsNTM1LjYgMzAwLjksNTI3LjEgMzAyLjAsNTIwLjVDMzA0LjIsNTA2LjAgMzA1LjcsNDk2LjYgMzA3LjUsNDg0LjBDMzA4LjIsNDc4LjggMzA5LjUsNDcwLjQgMzEwLjMsNDY1LjVDMzExLjksNDU2LjEgMzEzLjIsNDQ4LjAgMzE1LjUsNDMyLjBDMzE2LjIsNDI2LjggMzE3LjUsNDE4LjIgMzE4LjQsNDEzLjBDMzIyLjgsMzg3LjIgMzI0LjIsMzc5LjEgMzI1LjIsMzc0LjBDMzI1LjgsMzcxLjAgMzI2LjgsMzY1LjEgMzI3LjUsMzYxLjBDMzI5LjQsMzQ5LjQgMzM1LjIsMzIwLjkgMzM4LjAsMzEwLjBDMzQwLjYsMjk5LjQgMzM4LjYsMjk4LjEgMzI0LjIsMzAxLjVDMzA0LjIsMzA2LjIgMjUzLjYsMzA4LjUgMjM4LjQsMzA1LjRDMjEzLjIsMzAwLjIgMjAxLjYsMjgxLjIgMjExLjksMjYyLjJDMjE4LjMsMjUwLjQgMjIxLjcsMjQ5LjEgMjMwLjEsMjU0LjlDMjUzLjksMjcxLjQgMzAzLjMsMjcxLjIgNDExLjUsMjU0LjBDNDczLjQsMjQ0LjEgNDk2LjAsMjUwLjcgNDk2LjAsMjc4LjVDNDk2LjAsMjkyLjAgNDkwLjksMjk2LjggNDgxLjYsMjkxLjlDNDY3LjMsMjg0LjQgNDQ0LjEsMjgyLjUgNDE0LjUsMjg2LjRDMzk1LjAsMjg5LjAgMzk1LjksMjg4LjEgMzkxLjAsMzA4LjBDMzg0LjEsMzM1LjcgMzc4LjEsMzY1LjggMzcwLjAsNDEzLjBDMzY4LjgsNDE5LjkgMzY3LjIsNDI4LjYgMzY2LjQsNDMyLjVDMzY1LjEsNDM4LjkgMzYzLjgsNDQ3LjQgMzYxLjAsNDY3LjBDMzYwLjQsNDcxLjEgMzU5LjAsNDgxLjAgMzU3LjksNDg5LjBDMzU2LjgsNDk3LjAgMzU1LjIsNTA3LjggMzU0LjQsNTEzLjBDMzUzLjcsNTE4LjIgMzUyLjgsNTI1LjIgMzUyLjUsNTI4LjVDMzUyLjIsNTMxLjggMzUxLjEsNTQyLjQgMzUwLjAsNTUyLjBDMzQ3LjMsNTc2LjYgMzQ1LjEsNjAwLjkgMzQ0LjUsNjEyLjBDMzQ0LjIsNjE3LjIgMzQzLjgsNjI0LjMgMzQzLjUsNjI3LjdDMzQyLjksNjM3LjAgMzQxLjksNjM2LjcgMzY5LjIsNjM2LjhDNDA0LjAsNjM2LjkgNDE4LjIsNjQwLjMgNDI5LjQsNjUxLjJDNDQ0LjUsNjY2LjEgNDQxLjEsNjkxLjIgNDI1LjEsNjgzLjFDNDA2LjksNjczLjggMzQ4LjMsNjcxLjEgMzEyLjEsNjc4LjBDMzA5LjQsNjc4LjUgMzAyLjMsNjc5LjQgMjk2LjMsNjgwLjBDMjkwLjQsNjgwLjYgMjgyLjEsNjgxLjcgMjc4LjAsNjgyLjVDMjczLjksNjgzLjMgMjY3LjQsNjg0LjQgMjYzLjUsNjg1LjBDMjU0LjAsNjg2LjUgMjM0LjYsNjg5LjggMjI4LjUsNjkwLjlDMjE5LjcsNjkyLjYgMjExLjksNjkyLjIgMjA4LjMsNjg5LjlaTTEzNTcuOCw2NDkuMUMxMzc1LjgsNjQwLjAgMTM4Ny43LDYxMS40IDEzODEuNyw1OTEuNkMxMzc5LjYsNTg0LjcgMTM3OC41LDU4NC44IDEzNjUuOSw1OTMuMkMxMzQyLjQsNjA4LjkgMTMzMS4xLDYyMy4zIDEzMzEuMCw2MzcuOEMxMzMwLjksNjUwLjYgMTM0My45LDY1Ni4xIDEzNTcuOCw2NDkuMVpNNzgyLjUsNjA0LjZDNzk0LjAsNTk5LjIgODE4LjMsNTYyLjYgODI4LjQsNTM1LjNDODI5LjIsNTMzLjIgODMwLjgsNTI5LjAgODMyLjAsNTI2LjBDODM2LjcsNTEzLjkgODM5LjIsNTA2LjkgODQzLjUsNDk0LjBDODQ2LjAsNDg2LjYgODQ4LjksNDc3LjcgODUwLjEsNDc0LjNDODUzLjAsNDY1LjYgODUyLjIsNDYyLjkgODQ0LjYsNDU1LjVDODEyLjQsNDIzLjkgNzY0LjAsNDc1LjAgNzU1LjksNTQ5LjJDNzUxLjQsNTkwLjIgNzYyLjcsNjEzLjkgNzgyLjUsNjA0LjZaTTExNjUuNyw1MjcuNEMxMjA1LjEsNTA5LjUgMTIzMS45LDQ2Mi42IDEyMTMuMSw0NDQuNkMxMTk1LjIsNDI3LjUgMTE2NC44LDQ2Ny42IDExNTUuNCw1MjAuOEMxMTUzLjMsNTMyLjcgMTE1My43LDUzMi45IDExNjUuNyw1MjcuNFpNMTAxMC43LDQ1Mi44QzEwMzIuNyw0MjIuNSAxMDU3LjgsMzY4LjggMTA2My41LDM0MC4wQzEwNjMuOCwzMzguMSAxMDY0LjgsMzM0LjQgMTA2NS42LDMzMS45QzEwNjYuNCwzMjkuNCAxMDY3LjcsMzIzLjQgMTA2OC42LDMxOC40QzEwNjkuNSwzMTMuNSAxMDcwLjYsMzA3LjAgMTA3MS4yLDMwNC4wQzEwNzIuOSwyOTUuNyAxMDcyLjgsMjYzLjQgMTA3MS4yLDI1OC43QzEwNjAuNCwyMjguMyAxMDM3LjAsMjc1LjIgMTAxOC4wLDM2NS4yQzEwMTIuMiwzOTIuOSAxMDA5LjIsNDA5LjUgMTAwNy4wLDQyNy4wQzEwMDYuNCw0MzEuNyAxMDA1LjUsNDM4LjIgMTAwNS4wLDQ0MS41QzEwMDMuNSw0NTEuMCAxMDAzLjcsNDU4LjAgMTAwNS41LDQ1OC4wQzEwMDYuMyw0NTguMCAxMDA4LjcsNDU1LjYgMTAxMC43LDQ1Mi44Wk0xMTgxLjQsMzg0LjFDMTE3Mi4wLDM4MC4wIDExNzMuMSwzNzEuNyAxMTg0LjUsMzYxLjdDMTIwMC40LDM0Ny42IDEyMTUuMywzMjguNSAxMjI3LjksMzA2LjJDMTIzNi43LDI5MC44IDEyNDUuNiwyODcuNCAxMjU5LjAsMjk0LjRDMTI4MS43LDMwNi4xIDEyNzkuNSwzMjQuNSAxMjUyLjYsMzQ2LjlDMTIxNy4zLDM3Ni40IDExOTIuOSwzODkuMSAxMTgxLjQsMzg0LjFaIi8+Cjwvc3ZnPg==" width="240" height="76" alt="Inglés para ti">
 
-    <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+<section id="s1" class="card">
+  <h1>Descubre tu punto de partida</h1>
+  <p>Un examen corto de gramática, sin presión. No se aprueba ni se reprueba: es un mapa para diseñar tu ruta, a tu ritmo.</p>
+  <div id="resume" hidden class="card" style="background:var(--soft);box-shadow:none;margin-bottom:16px">
+    <p id="rtxt" style="color:var(--teal);font-weight:600"></p>
+    <button class="btn" id="rc" type="button" style="margin-top:0">Continuar</button>
+    <button class="btn g" id="rn" type="button">Empezar de nuevo</button>
+  </div>
+  <div class="ex" role="radiogroup" aria-label="Tipo de examen">
+    <label><input type="radio" name="ex" value="basic" checked><div><b>Básico · A1–A2</b><span>30 preguntas · unos 10 minutos</span></div></label>
+    <label><input type="radio" name="ex" value="mid"><div><b>Intermedio · B1–B2</b><span>30 preguntas · unos 12 minutos</span></div></label>
+  </div>
+  <p style="font-size:.88rem">¿No sabes cuál elegir? Empieza por el básico: si sales sólido, te sugerimos el intermedio.</p>
+  <input id="nm" type="text" placeholder="Tu nombre completo" autocomplete="name" aria-label="Nombre completo">
+  <input id="wa" type="tel" placeholder="Tu WhatsApp (opcional)" autocomplete="tel" aria-label="WhatsApp">
+  <p class="note" style="margin-top:0">Responde con tu primer instinto y sin ayuda. Si dudas, elige la opción que te parezca mejor.</p>
+  <p id="err" role="alert"></p>
+  <button class="btn" id="go" type="button">Comenzar</button>
+</section>
 
-    <div id="screen-welcome" class="w-full max-w-3xl bg-[#0a192f] p-8 rounded-xl shadow-2xl border border-[#233554] text-center">
-        <i class="fa-solid fa-layer-group text-6xl text-[#d4af37] mb-6"></i>
-        <h1 class="text-4xl font-bold text-white mb-2">GRAMMAR DEEP SCAN</h1>
-        <p class="text-gray-400 mb-8 text-lg">Evaluación de Precisión Estructural (60 Puntos)</p>
-        
-        <div class="mb-8 text-left bg-[#112240] p-6 rounded-lg text-sm border border-[#233554]">
-            <p class="text-gold mb-2 font-bold uppercase">Protocolo de Examen:</p>
-            <ul class="list-disc list-inside text-gray-300 space-y-2">
-                <li><strong>Cobertura Total:</strong> A1 (Básico) a B2 (Avanzado).</li>
-                <li><strong>Duración:</strong> Aprox. 15-20 minutos.</li>
-                <li><strong>Regla de Oro:</strong> Responde con tu primer instinto. No busques ayuda.</li>
-            </ul>
-        </div>
+<section id="s2" class="card" hidden>
+  <div class="top"><span id="lv"></span><span id="cnt"></span></div>
+  <h2 class="q" id="qt" aria-live="polite"></h2>
+  <div id="opts"></div>
+  <button class="btn g" id="bk" type="button">← Pregunta anterior</button>
+</section>
 
-        <input type="text" id="studentNameInput" placeholder="Nombre Completo del Alumno" class="w-full p-4 mb-6 rounded bg-[#0a192f] border border-[#233554] text-white focus:border-[#d4af37] outline-none text-center text-lg shadow-inner">
+<section id="s3" class="card res" hidden>
+  <h1 id="hi"></h1>
+  <p>Este es tu punto de partida estimado.</p>
+  <div class="big" id="sc"></div>
+  <div class="chip" id="lvl"></div>
+  <p id="rec" style="color:var(--teal);font-weight:600"></p>
+  <div class="left"><h2>Tu desglose</h2><div id="bl"></div></div>
+  <div class="left"><h2>Áreas para reforzar</h2><ul id="wk"></ul></div>
+  <a class="btn" id="wa2" target="_blank" rel="noopener noreferrer">Enviar mi resultado por WhatsApp</a>
+  <button class="btn s" id="dl" type="button">Descargar mi resultado (PDF)</button>
+  <p id="inapp" class="note" hidden>Estás viendo esta página dentro de una app. Si la descarga del PDF no funciona, ábrela en tu navegador (menú ⋯ → «Abrir en el navegador»).</p>
+  <button class="btn s" id="retry" type="button" hidden>Reintentar envío</button>
+  <p id="st" role="status"></p>
+  <button class="btn g" id="again" type="button">Hacer otro examen</button>
+  <p class="note">Estimación basada solo en gramática de opción múltiple. Tu nivel real se confirma en una conversación con tu profesor.</p>
+</section>
+</main>
 
-        <button onclick="startQuiz()" class="bg-[#d4af37] text-[#0a192f] font-bold py-4 px-10 rounded shadow-lg hover:bg-[#b5952f] w-full transition transform hover:scale-105 uppercase tracking-widest">
-            Comenzar Evaluación
-        </button>
+<div id="pdf">
+  <div style="background:#FFF8EE;padding:24px 32px;border-bottom:5px solid #E4572E">
+    <table style="width:100%;border-collapse:collapse"><tr>
+      <td><img id="plg" width="230" height="73" style="display:block;width:230px;height:auto" alt="Inglés para ti"></td>
+      <td style="text-align:right;font-size:12px;color:#5b6b70;line-height:1.5"><b style="color:#0F4C5C;font-size:13px">Examen de nivel · <span id="pe"></span></b><br><span id="pd"></span></td>
+    </tr></table>
+  </div>
+  <div style="padding:26px 32px 0">
+    <div id="phi" style="font:800 25px Nunito,Arial,sans-serif;color:#0F4C5C"></div>
+    <div style="font-size:13px;color:#5b6b70;margin:2px 0 20px">Un mapa para diseñar tu ruta, a tu ritmo.</div>
+    <table style="width:100%;border-collapse:separate;table-layout:fixed"><tr>
+      <td style="background:#FFF3EA;border-radius:16px;padding:18px;text-align:center"><div style="font-size:11px;letter-spacing:1px;color:#5b6b70;font-weight:800">PUNTUACIÓN</div><div id="ps" style="font:800 40px Nunito,Arial,sans-serif;color:#E4572E;line-height:1.2"></div></td>
+      <td style="width:16px"></td>
+      <td style="background:#0F4C5C;border-radius:16px;padding:18px;text-align:center"><div style="font-size:11px;letter-spacing:1px;color:#cfe3e6;font-weight:800">NIVEL ESTIMADO (GRAMÁTICA)</div><div id="pl" style="font:800 34px Nunito,Arial,sans-serif;color:#FFF8EE;line-height:1.35"></div></td>
+    </tr></table>
+    <div style="font-size:12px;letter-spacing:1px;color:#E4572E;font-weight:800;margin:26px 0 4px">TU DESGLOSE</div>
+    <div id="pb"></div>
+    <div style="font-size:12px;letter-spacing:1px;color:#E4572E;font-weight:800;margin:24px 0 6px">ÁREAS PARA REFORZAR</div>
+    <div id="pw"></div>
+    <div style="margin-top:26px;background:#FFF3EA;border-left:6px solid #E4572E;border-radius:10px;padding:14px 18px">
+      <div style="font-size:12px;letter-spacing:1px;color:#E4572E;font-weight:800;margin-bottom:4px">NUESTRA RECOMENDACIÓN</div>
+      <div id="pr" style="font-size:14px;line-height:1.55"></div>
     </div>
-
-    <div id="screen-quiz" class="hidden w-full max-w-3xl">
-        <div class="bg-[#0a192f] p-8 rounded-xl shadow-2xl border border-[#233554]">
-            <div class="flex justify-between items-center mb-8 text-sm font-bold text-gray-500 uppercase tracking-widest">
-                <span id="question-level" class="bg-[#112240] px-3 py-1 rounded text-[#d4af37]">Nivel A1</span>
-                <span><span id="q-current">1</span> / 60</span>
-            </div>
-
-            <h2 id="question-text" class="text-2xl font-bold text-white mb-8 leading-relaxed"></h2>
-
-            <div id="options-container" class="space-y-3"></div>
-        </div>
+    <div style="margin-top:16px;background:#0F4C5C;border-radius:14px;padding:16px 20px;color:#FFF8EE">
+      <div style="font:800 16px Nunito,Arial,sans-serif">Siguiente paso: agenda tu diagnóstico</div>
+      <div style="font-size:13px;margin-top:2px">WhatsApp 644 167 1260 · Ciudad Obregón, Sonora</div>
     </div>
+    <p style="font-size:10px;color:#7a878b;margin:16px 0 0;padding-bottom:26px">Estimación basada solo en gramática de opción múltiple. Tu nivel real se confirma en una conversación con tu profesor.</p>
+  </div>
+</div>
 
-    <div id="screen-results" class="hidden w-full max-w-3xl text-center">
-        <div class="bg-[#0a192f] p-10 rounded-xl shadow-2xl border border-[#233554]">
-            <div class="w-24 h-24 bg-[#112240] rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-[#d4af37]">
-                <i class="fa-solid fa-check text-4xl text-[#d4af37]"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-2">Evaluación Finalizada</h2>
-            <p class="text-gray-400 mb-8">Resultados enviados al profesor.</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-8">
-                <div class="bg-[#112240] p-6 rounded border border-gray-700">
-                    <p class="text-xs text-gray-500 uppercase">Puntuación Total</p>
-                    <p id="final-score" class="text-4xl font-bold text-white mt-1">0/60</p>
-                </div>
-                <div class="bg-[#112240] p-6 rounded border border-gray-700">
-                    <p class="text-xs text-gray-500 uppercase">Nivel Asignado</p>
-                    <p id="final-level" class="text-4xl font-bold text-[#d4af37] mt-1">A1</p>
-                </div>
-            </div>
+<script>
+const $=i=>document.getElementById(i),K='ipt_progress';
+const CATS={T:'Tiempos verbales',M:'Verbos modales y auxiliares',S:'Estructura de la oración',D:'Descripciones y comparaciones',P:'Preposiciones y conectores',C:'Condicionales y deseos',E:'Estructuras avanzadas'};
+// [categoría, pregunta, opciones, índice correcto] · primeras 15 = parte 1, siguientes 15 = parte 2
+const BANK={
+basic:[
+['T','I ___ a student.',['is','are','am','be'],2],
+['T','She ___ pizza.',['like','likes','liking','is like'],1],
+['M','___ you speak English?',['Are','Is','Does','Do'],3],
+['D','This is ___ book.',['my','I','mine','me'],0],
+['S','Three ___ are in the park.',['childs','children','child','childrens'],1],
+['S','___ two cars in the garage.',['There is','There are','Is','Are'],1],
+['S','___ from Spain?',['You are','Are you','You is','Is you'],1],
+['S','___ is my sister.',['He','She','It','They'],1],
+['M','I ___ happy.',['no am','am not','not am',"don't"],1],
+['S','I have ___ apple.',['a','an','the','two'],1],
+['T','He ___ sleeping now.',['is','are','do','does'],0],
+['M','I ___ swim very well.',['can','cans','canning','to can'],0],
+['T','Where ___ you yesterday?',['was','were','did','are'],1],
+['S','Listen to ___.',['I','me','my','mine'],1],
+['S','___ is your name?',['Who','When','What','Where'],2],
+['T','I ___ to the cinema last night.',['go','went','gone','goed'],1],
+['M','___ she call you?',['Do','Does','Did','Was'],2],
+['D','London is ___ than Paris.',['big','bigger','more big','biger'],1],
+['D','It is the ___ place in the world.',['goodest','most good','best','better'],2],
+['T','She ___ going to buy a car.',['is','does','will','has'],0],
+['D',"I don't have ___ money.",['some','many','much','no'],2],
+['D','She sings ___.',['good','bad','beautiful','beautifully'],3],
+['P','See you ___ Friday.',['in','at','on','by'],2],
+['S','I want ___ go home.',['to','for','that','(nada)'],0],
+['T','I ___ seen that movie.',['have','has','did','was'],0],
+['M','You ___ see a doctor.',['should to','should','ought','need'],1],
+['D','This is ___ car.',['Johns',"John's","Johns'",'John is'],1],
+['P','I was tired, ___ I went to bed.',['because','but','so','or'],2],
+['D',"There isn't ___ milk in the fridge.",['some','any','many','a'],1],
+['P','The cat is hiding ___ the table.',['under','in','at','to'],0]
+],
+mid:[
+['C','If it rains, I ___ stay home.',['stay','will','would','am'],1],
+['C','If she ___ more time, she would learn French.',['has','have','had','would have'],2],
+['T','I ___ when the phone rang.',['slept','was sleeping','sleep','am sleeping'],1],
+['E','The book ___ written by him in 1998.',['is','was','has','did'],1],
+['T','I ___ live in New York.',['use to','used to','using to','usually'],1],
+['T','I ___ waiting for two hours.',['am','have been','was','had been'],1],
+['M',"You ___ smoke here. It's illegal.",["don't have to","mustn't","shouldn't","needn't"],1],
+['E','The man ___ called me is here.',['which','who','whose','whom'],1],
+['E','I enjoy ___ tennis.',['play','to play','playing','played'],2],
+['E','A: I like tea. B: So ___ I.',['do','am','have','like'],0],
+['T','I have known him ___ 2010.',['for','since','from','during'],1],
+['E','He is not old ___ to drive.',['enough','too','very','so'],0],
+['E',"You are Spanish, ___?",["aren't you","isn't it","don't you","do you"],0],
+['T',"I haven't finished ___.",['just','already','yet','since'],2],
+['P','Please ___ off your shoes.',['take','put','get','make'],0],
+['C','If I had known, I ___ helped.',['would','will','would have','had'],2],
+['T','The train ___ left when we arrived.',['has','had','was','did'],1],
+['T','By 2030, we ___ finished.',['will be','will have','are','have'],1],
+['C','If I ___ studied, I would be rich now.',['have','had','would have','was'],1],
+['E','Never ___ seen such a thing.',['I have','have I','did I','I did'],1],
+['E','I need to ___ my car fixed.',['make','do','get','let'],2],
+['C','I wish I ___ taller.',['am','were','will be','would be'],1],
+['P','___ the rain, we went out.',['Although','Despite','However','Even'],1],
+['M','He ___ be at home; his lights are off.',['must',"can't","shouldn't",'ought'],1],
+['E','It is ___ that he is rich.',['say','said','telling','told'],1],
+['E','___ by the noise, he woke up.',['Scaring','Scared','Scare','To scare'],1],
+['C','I wish I ___ harder last year.',['studied','had studied','would study','have studied'],1],
+['T','This time tomorrow, I ___ flying.',['will','am','will be','would be'],2],
+['C',"You can't enter ___ you have a ticket.",['if','unless','while','so'],1],
+['P',"___ you do, don't touch that.",['However','Whatever','Whenever','Whoever'],1]
+]};
+const EX={basic:{n:'Básico A1–A2',lv:['A1','A2']},mid:{n:'Intermedio B1–B2',lv:['B1','B2']}};
+const LV={basic:{solid:'A2 sólido',top:'A2',low:'A1',none:'Pre-A1'},mid:{solid:'B2 sólido',top:'B2',low:'B1',none:'Por debajo de B1'}};
+const REC={basic:{
+solid:'Tus bases son firmes. Te recomendamos el examen intermedio (B1–B2) para ubicar tu punto de partida exacto.',
+top:'Tienes una base funcional. Trabajaremos a tu ritmo para consolidar A2 y avanzar hacia B1.',
+low:'Ya tienes los primeros cimientos. Construiremos paso a paso, sin prisa, con práctica desde la primera clase.',
+none:'Empezamos desde cero y eso está perfecto: construiremos tu base con calma y mucha práctica.'},
+mid:{
+solid:'Excelente dominio de la gramática. Podemos enfocarnos en fluidez, precisión y tu ámbito profesional (este examen aún no mide C1).',
+top:'Buen dominio intermedio-alto. Afinaremos las estructuras avanzadas y las llevaremos a conversación real.',
+low:'Buen nivel intermedio. Consolidaremos B1 y daremos el salto a B2 con práctica guiada.',
+none:'Te conviene reforzar primero las bases. Te recomendamos el examen básico (A1–A2) para ubicar tu punto de partida.'}};
+let S=null;
+const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const prep=k=>{const q=BANK[k];return[q.slice(0,15),q.slice(15)].flatMap((b,bi)=>sh([...b]).map(([c,t,o,a])=>{const r=o[a],p=sh([...o]);return{c,t,o:p,a:p.indexOf(r),b:bi}}))};
+const show=id=>['s1','s2','s3'].forEach(s=>$(s).hidden=s!==id);
+const save=()=>{try{localStorage.setItem(K,JSON.stringify({exam:S.exam,name:S.name,wa:S.wa,qs:S.qs,ans:S.ans,i:S.i}))}catch(e){}};
+const clear=()=>{try{localStorage.removeItem(K)}catch(e){}};
+const st=t=>$('st').textContent=t;
 
-            <div class="flex gap-4 mb-4">
-                <button onclick="downloadReport()" class="flex-1 bg-gray-700 text-white font-bold py-4 rounded shadow-lg hover:bg-gray-600 transition">
-                    <i class="fa-solid fa-download mr-2"></i> DESCARGAR PDF
-                </button>
-                <button onclick="copyResultToken()" id="btn-copy-token" class="flex-1 bg-[#d4af37] text-[#0a192f] font-bold py-4 rounded shadow-lg hover:bg-[#b5952f] transition flex flex-col items-center justify-center">
-                    <span><i class="fa-solid fa-copy mr-2"></i> COPIAR TOKEN</span>
-                </button>
-            </div>
-             <p id="upload-status" class="text-xs text-gray-500 mt-4"></p>
-        </div>
-    </div>
+try{const r=JSON.parse(localStorage.getItem(K));if(r&&r.qs&&r.i<r.qs.length){S=r;$('resume').hidden=false;$('rtxt').textContent=r.name+', tienes un examen a medias (pregunta '+(r.i+1)+' de '+r.qs.length+').'}}catch(e){}
+$('rc').onclick=()=>{show('s2');render()};
+$('rn').onclick=()=>{clear();S=null;$('resume').hidden=true};
 
-    <div id="pdf-report">
-        <div style="border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between;">
-            <div>
-                <h1 style="font-size: 28px; font-weight: bold; margin: 0;">GRAMMAR DEEP SCAN</h1>
-                <p style="font-size: 12px; font-weight: bold; color: #d4af37; letter-spacing: 2px;">THE ENGLISH MASTER PROTOCOL</p>
-            </div>
-            <div style="text-align: right;">
-                <p style="font-size: 14px; font-weight: bold;" id="pdf-student-name">Alumno</p>
-                <p style="font-size: 12px; color: #666;" id="pdf-date">Date</p>
-            </div>
-        </div>
+$('go').onclick=()=>{
+  const name=$('nm').value.trim(),err=$('err');err.textContent='';
+  if(!name){err.textContent='Escribe tu nombre para comenzar.';$('nm').focus();return}
+  const exam=document.querySelector('input[name=ex]:checked').value;
+  S={exam,name,wa:$('wa').value.trim(),qs:prep(exam),ans:[],i:0};save();show('s2');render();
+};
 
-        <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-            <div style="flex: 1; background: #f4f4f4; padding: 20px; border-radius: 8px; text-align: center;">
-                <p style="font-size: 10px; text-transform: uppercase; color: #666;">Puntuación Global</p>
-                <p style="font-size: 36px; font-weight: bold; margin: 5px 0;" id="pdf-score">0/60</p>
-            </div>
-            <div style="flex: 1; background: #0a192f; color: white; padding: 20px; border-radius: 8px; text-align: center;">
-                <p style="font-size: 10px; text-transform: uppercase; color: #aaa;">Nivel CEFR</p>
-                <p style="font-size: 36px; font-weight: bold; margin: 5px 0; color: #d4af37;" id="pdf-level">A1</p>
-            </div>
-        </div>
+function render(){
+  const q=S.qs[S.i];
+  $('lv').textContent='Parte '+(q.b+1)+' · '+EX[S.exam].lv[q.b];
+  $('cnt').textContent=(S.i+1)+' / '+S.qs.length;
+  $('qt').textContent=q.t;
+  $('bar').style.width=S.i/S.qs.length*100+'%';
+  $('bk').hidden=S.i===0;
+  const o=$('opts');o.innerHTML='';
+  q.o.forEach((x,k)=>{const b=document.createElement('button');b.type='button';b.className='opt'+(S.ans[S.i]===k?' on':'');b.innerHTML='<i>'+'ABCD'[k]+'</i>';b.append(x);b.onclick=()=>pick(k);o.append(b)});
+}
+function pick(k){S.ans[S.i]=k;S.i++;save();S.i<S.qs.length?render():finish()}
+$('bk').onclick=()=>{if(S.i>0){S.i--;render()}};
+addEventListener('keydown',e=>{
+  if($('s2').hidden||!S||!S.qs[S.i])return;
+  const n='1234'.indexOf(e.key)>=0&&e.key.length===1?'1234'.indexOf(e.key):(e.key.length===1?'abcd'.indexOf(e.key.toLowerCase()):-1);
+  if(n>=0&&n<S.qs[S.i].o.length)pick(n);
+});
 
-        <h3 style="font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Desglose por Nivel</h3>
-        <div class="pdf-row"><strong>Nivel A1:</strong> <span id="pdf-a1"></span></div>
-        <div class="pdf-row"><strong>Nivel A2:</strong> <span id="pdf-a2"></span></div>
-        <div class="pdf-row"><strong>Nivel B1:</strong> <span id="pdf-b1"></span></div>
-        <div class="pdf-row"><strong>Nivel B2:</strong> <span id="pdf-b2"></span></div>
+function finish(){
+  const E=EX[S.exam],sb=[0,0],cat={};
+  S.qs.forEach((q,i)=>{const ok=S.ans[i]===q.a;if(ok)sb[q.b]++;const c=cat[q.c]||(cat[q.c]={ok:0,n:0});c.n++;if(ok)c.ok++});
+  const total=sb[0]+sb[1],key=sb[0]>=12&&sb[1]>=12?'solid':sb[1]>=10?'top':sb[0]>=10?'low':'none';
+  const level=LV[S.exam][key];
+  const weak=Object.entries(cat).map(([c,v])=>({c:CATS[c],err:v.n-v.ok,n:v.n})).filter(x=>x.err>=2&&x.err/x.n>=.5).sort((x,y)=>y.err-x.err);
+  S.res={sb,total,level,weak,rec:REC[S.exam][key]};clear();show('s3');
+  $('bar').style.width='100%';
+  $('hi').textContent='¡Listo, '+S.name.split(' ')[0]+'!';
+  $('sc').textContent=total+'/'+S.qs.length;$('lvl').textContent=level;$('rec').textContent=S.res.rec;
+  $('bl').innerHTML=E.lv.map((l,i)=>`<div class="row"><span>${l}</span><span>${sb[i]}/15</span></div><div class="bar"><i style="width:${sb[i]/15*100}%"></i></div>`).join('');
+  $('wk').innerHTML=weak.length?weak.map(w=>`<li>${w.c} <small>(${w.err} de ${w.n} falladas)</small></li>`).join(''):'<li>No se detectan áreas débiles claras. ¡Buen trabajo!</li>';
+  const msg=['Hola, soy '+S.name+'. Hice el examen de nivel de Inglés Para Ti ('+E.n+').','Resultado: '+level+' ('+total+'/'+S.qs.length+')',E.lv.map((l,k)=>l+': '+sb[k]+'/15').join(' · '),'Áreas para reforzar: '+(weak.length?weak.map(w=>w.c).join(', '):'ninguna clara'),'Quiero agendar mi diagnóstico.'].join('\n');
+  $('wa2').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  $('pe').textContent=E.n;
+  $('phi').textContent='Hola, '+S.name.split(' ')[0]+'. Este es tu punto de partida.';
+  $('pd').textContent=new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+S.name;
+  $('ps').textContent=total+'/'+S.qs.length;$('pl').textContent=level;
+  $('pb').innerHTML=E.lv.map((l,i)=>`<div style="margin-top:10px"><table style="width:100%;border-collapse:collapse;font:800 13px Nunito,Arial,sans-serif"><tr><td>${l}</td><td style="text-align:right">${sb[i]}/15</td></tr></table><div style="height:12px;background:#eadfce;border-radius:8px;margin-top:4px"><div style="height:12px;width:${sb[i]/15*100}%;background:#F2A900;border-radius:8px"></div></div></div>`).join('');
+  $('pw').innerHTML=weak.length?weak.map(w=>`<span style="display:inline-block;border:2px solid #E4572E;color:#E4572E;border-radius:20px;padding:4px 12px;margin:4px 8px 0 0;font:800 12px Nunito,Arial,sans-serif">${w.c} <span style="font-weight:600">· ${w.err} de ${w.n}</span></span>`).join(''):'<span style="font-size:13px;color:#5b6b70">No se detectan áreas débiles claras. ¡Buen trabajo!</span>';
+  $('pr').textContent=S.res.rec;
+  AUTO_SEND?send():st('');
+}
 
-        <h3 style="font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; margin-top: 30px; text-transform: uppercase;">Análisis de Errores</h3>
-        <ul id="pdf-errors" style="font-size: 12px; line-height: 1.6; color: #d00;"></ul>
-
-        <div style="margin-top: 40px; padding: 15px; background: #f9f9f9; border-left: 4px solid #d4af37;">
-            <p style="font-size: 10px; font-weight: bold; text-transform: uppercase; color: #666; margin-bottom: 5px;">Recomendación</p>
-            <p style="font-size: 12px;" id="pdf-recommendation"></p>
-        </div>
-    </div>
-
-    <script>
-        const questions = [
-            {l:'A1', t:'To Be', q:'I ___ a student.', o:['is','are','am','be'], a:2},
-            {l:'A1', t:'Present Simple', q:'She ___ pizza.', o:['like','likes','liking','is like'], a:1},
-            {l:'A1', t:'Auxiliary', q:'___ you speak English?', o:['Are','Is','Does','Do'], a:3},
-            {l:'A1', t:'Possessives', q:'This is ___ book.', o:['my','I','mine','me'], a:0},
-            {l:'A1', t:'Plurals', q:'Three ___ are in the park.', o:['childs','children','child','childrens'], a:1},
-            {l:'A1', t:'There Is/Are', q:'___ two cars in the garage.', o:['There is','There are','Is','Are'], a:1},
-            {l:'A1', t:'Word Order', q:'___ from Spain?', o:['You are','Are you','You is','Is you'], a:1},
-            {l:'A1', t:'Pronouns', q:'___ is my sister.', o:['He','She','It','They'], a:1},
-            {l:'A1', t:'Negatives', q:'I ___ happy.', o:['no am','am not','not am','don\'t'], a:1},
-            {l:'A1', t:'Articles', q:'I have ___ apple.', o:['a','an','the','two'], a:1},
-            {l:'A1', t:'Present Continuous', q:'He ___ sleeping now.', o:['is','are','do','does'], a:0},
-            {l:'A1', t:'Can', q:'I ___ swim very well.', o:['can','cans','canning','to can'], a:0},
-            {l:'A1', t:'Past Be', q:'Where ___ you yesterday?', o:['was','were','did','are'], a:1},
-            {l:'A1', t:'Object Pronouns', q:'Listen to ___.', o:['I','me','my','mine'], a:1},
-            {l:'A1', t:'Wh- Questions', q:'___ is your name?', o:['Who','When','What','Where'], a:2},
-            {l:'A2', t:'Past Simple', q:'I ___ to the cinema last night.', o:['go','went','gone','goed'], a:1},
-            {l:'A2', t:'Did', q:'___ she call you?', o:['Do','Does','Did','Was'], a:2},
-            {l:'A2', t:'Comparatives', q:'London is ___ than Paris.', o:['big','bigger','more big','biger'], a:1},
-            {l:'A2', t:'Superlatives', q:'It is the ___ place in the world.', o:['goodest','most good','best','better'], a:2},
-            {l:'A2', t:'Going To', q:'I ___ buy a car.', o:['will','am going to','go to','going'], a:1},
-            {l:'A2', t:'Quantifiers', q:'I don\'t have ___ money.', o:['some','many','much','no'], a:2},
-            {l:'A2', t:'Adverbs', q:'She sings ___.', o:['good','bad','beautiful','beautifully'], a:3},
-            {l:'A2', t:'Prepositions', q:'See you ___ Friday.', o:['in','at','on','by'], a:2},
-            {l:'A2', t:'Infinitive', q:'I want ___ go home.', o:['to','for','that','___'], a:0},
-            {l:'A2', t:'Present Perfect', q:'I ___ seen that movie.', o:['have','has','did','was'], a:0},
-            {l:'A2', t:'Should', q:'You ___ see a doctor.', o:['should to','should','ought','need'], a:1},
-            {l:'A2', t:'Possessive \'s', q:'This is ___ car.', o:['Johns','John\'s','Johns\'','John is'], a:1},
-            {l:'A2', t:'Conjunctions', q:'I was tired, ___ I went to bed.', o:['because','but','so','or'], a:2},
-            {l:'A2', t:'Someone/Anyone', q:'Is there ___ here?', o:['someone','anyone','no one','everyone'], a:1},
-            {l:'A2', t:'Prepositions Place', q:'The cat is ___ the table.', o:['under','in','at','to'], a:0},
-            {l:'B1', t:'First Conditional', q:'If it rains, I ___ stay home.', o:['stay','will','would','am'], a:1},
-            {l:'B1', t:'Second Conditional', q:'If I ___ rich, I would travel.', o:['am','was','were','would be'], a:2},
-            {l:'B1', t:'Past Continuous', q:'I ___ when the phone rang.', o:['slept','was sleeping','sleep','am sleeping'], a:1},
-            {l:'B1', t:'Passive Voice', q:'The book ___ written by him.', o:['is','was','has','did'], a:1},
-            {l:'B1', t:'Used to', q:'I ___ live in New York.', o:['use to','used to','using to','usually'], a:1},
-            {l:'B1', t:'Present Perfect Continuous', q:'I ___ waiting for 2 hours.', o:['am','have been','was','had been'], a:1},
-            {l:'B1', t:'Modals (Must)', q:'You ___ smoke here. It\'s illegal.', o:['don\'t have to','mustn\'t','shouldn\'t','needn\'t'], a:1},
-            {l:'B1', t:'Relative Clauses', q:'The man ___ called me is here.', o:['which','who','whose','whom'], a:1},
-            {l:'B1', t:'Gerunds', q:'I enjoy ___ tennis.', o:['play','to play','playing','played'], a:2},
-            {l:'B1', t:'So/Neither', q:'"I like tea." "So ___ I."', o:['do','am','have','like'], a:0},
-            {l:'B1', t:'Reported Speech', q:'He said he ___ busy.', o:['is','was','will be','has been'], a:1},
-            {l:'B1', t:'Enough', q:'He is not old ___ to drive.', o:['enough','too','very','so'], a:0},
-            {l:'B1', t:'Question Tags', q:'You are Spanish, ___?', o:['aren\'t you','isn\'t it','don\'t you','do you'], a:0},
-            {l:'B1', t:'Just/Yet/Already', q:'I haven\'t finished ___.', o:['just','already','yet','since'], a:2},
-            {l:'B1', t:'Phrasal Verbs', q:'Please ___ off your shoes.', o:['take','put','get','make'], a:0},
-            {l:'B2', t:'Third Conditional', q:'If I had known, I ___ helped.', o:['would','will','would have','had'], a:2},
-            {l:'B2', t:'Past Perfect', q:'The train ___ left when we arrived.', o:['has','had','was','did'], a:1},
-            {l:'B2', t:'Future Perfect', q:'By 2030, we ___ finished.', o:['will be','will have','are','have'], a:1},
-            {l:'B2', t:'Mixed Conditionals', q:'If I ___ studied, I would be rich now.', o:['have','had','would have','was'], a:1},
-            {l:'B2', t:'Inversion', q:'Never ___ seen such a thing.', o:['I have','have I','did I','I did'], a:1},
-            {l:'B2', t:'Causative', q:'I need to ___ my car fixed.', o:['make','do','get','let'], a:2},
-            {l:'B2', t:'Wishes', q:'I wish I ___ taller.', o:['am','were','will be','would be'], a:1},
-            {l:'B2', t:'Connectors', q:'___ the rain, we went out.', o:['Although','Despite','However','Even'], a:1},
-            {l:'B2', t:'Modals of Deduction', q:'He ___ be at home; his lights are off.', o:['must','can\'t','shouldn\'t','might'], a:1},
-            {l:'B2', t:'Advanced Passive', q:'It is ___ that he is rich.', o:['say','said','telling','told'], a:1},
-            {l:'B2', t:'Participle Clauses', q:'___ by the noise, he woke up.', o:['Scaring','Scared','Scare','To scare'], a:1},
-            {l:'B2', t:'Subjunctive', q:'It is essential that he ___ on time.', o:['be','is','will be','was'], a:0},
-            {l:'B2', t:'Future Continuous', q:'This time tomorrow, I ___ flying.', o:['will','am','will be','would be'], a:2},
-            {l:'B2', t:'Unless', q:'I won\'t go ___ you go.', o:['if','unless','providing','as long as'], a:1},
-            {l:'B2', t:'Whatever', q:'___ you do, don\'t touch that.', o:['However','Whatever','Whenever','Whoever'], a:1}
-        ];
-
-        let currentQ = 0;
-        let score = 0;
-        let answers = [];
-        let studentName = "";
-        let finalLevelResult = "A1";
-
-        function startQuiz() {
-            studentName = document.getElementById('studentNameInput').value;
-            if(!studentName) { alert('Por favor, ingresa tu nombre completo para iniciar.'); return; }
-            document.getElementById('screen-welcome').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            renderQuestion();
-        }
-
-        function renderQuestion() {
-            const q = questions[currentQ];
-            document.getElementById('q-current').innerText = currentQ + 1;
-            document.getElementById('question-level').innerText = "NIVEL " + q.l;
-            document.getElementById('question-text').innerText = q.q;
-            
-            const cont = document.getElementById('options-container');
-            cont.innerHTML = '';
-            
-            q.o.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => handleAnswer(idx);
-                cont.appendChild(btn);
-            });
-
-            document.getElementById('progress').style.width = ((currentQ / 60) * 100) + '%';
-        }
-
-        function handleAnswer(idx) {
-            const q = questions[currentQ];
-            const isCorrect = (idx === q.a);
-            answers.push({ l: q.l, t: q.t, correct: isCorrect });
-            if(isCorrect) score++;
-
-            currentQ++;
-            if(currentQ < questions.length) {
-                renderQuestion();
-            } else {
-                showResults();
-            }
-        }
-
-        function showResults() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-results').classList.remove('hidden');
-            document.getElementById('progress').style.width = '100%';
-            
-            // Lógica de Niveles
-            const a1_score = answers.filter(a => a.l === 'A1' && a.correct).length;
-            const a2_score = answers.filter(a => a.l === 'A2' && a.correct).length;
-            const b1_score = answers.filter(a => a.l === 'B1' && a.correct).length;
-            const b2_score = answers.filter(a => a.l === 'B2' && a.correct).length;
-
-            let level = "A1";
-            let rec = "Se requiere iniciar el Plan Standard desde cero para construir bases.";
-            if(a1_score >= 12) {
-                level = "A2";
-                rec = "Bases sólidas. Iniciar en nivel A2 acelerado.";
-                if(a2_score >= 12) {
-                    level = "B1";
-                    rec = "Candidato a Plan Smart Pro. Nivel intermedio.";
-                    if(b1_score >= 10) {
-                        level = "B2";
-                        rec = "Nivel avanzado. Candidato ideal para Master Executive.";
-                    }
-                }
-            }
-            finalLevelResult = level;
-
-            // Mostrar en pantalla
-            document.getElementById('final-score').innerText = score + "/60";
-            document.getElementById('final-level').innerText = level;
-
-            // Rellenar PDF oculto
-            document.getElementById('pdf-student-name').innerText = studentName;
-            document.getElementById('pdf-date').innerText = new Date().toLocaleDateString();
-            document.getElementById('pdf-score').innerText = score + "/60";
-            document.getElementById('pdf-level').innerText = level;
-            document.getElementById('pdf-a1').innerText = a1_score + "/15";
-            document.getElementById('pdf-a2').innerText = a2_score + "/15";
-            document.getElementById('pdf-b1').innerText = b1_score + "/15";
-            document.getElementById('pdf-b2').innerText = b2_score + "/15";
-            document.getElementById('pdf-recommendation').innerText = rec;
-
-            // Errores
-            const errorsList = document.getElementById('pdf-errors');
-            errorsList.innerHTML = '';
-            const incorrect = answers.filter(a => !a.correct);
-            if(incorrect.length === 0) {
-                errorsList.innerHTML = "<li>Sin errores significativos.</li>";
-            } else {
-                let topicCounts = {};
-                incorrect.forEach(inc => { topicCounts[inc.t] = (topicCounts[inc.t] || 0) + 1; });
-                const sortedErrors = Object.entries(topicCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
-                sortedErrors.forEach(([topic, count]) => {
-                    const li = document.createElement('li');
-                    li.innerText = `${topic} (${count} fallos)`;
-                    errorsList.appendChild(li);
-                });
-            }
-
-            // --- ENVÍO AUTOMÁTICO AL BACKEND ---
-            sendReportToBackend(level);
-        }
-
-        async function sendReportToBackend(level) {
-            const statusText = document.getElementById('upload-status');
-            statusText.innerText = "Generando y enviando reporte...";
-            
-            try {
-                // 1. Generar PDF en Base64 sin descargar
-                const element = document.getElementById('pdf-report');
-                element.style.display = 'block'; 
-                const opt = { margin: 0.5, filename: 'report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
-                
-                const pdfDataUri = await html2pdf().set(opt).from(element).outputPdf('datauristring');
-                element.style.display = 'none';
-
-                const pdfBase64 = pdfDataUri.split(',')[1]; // Limpiar encabezado
-
-                // 2. Enviar a Netlify Function
-                const response = await fetch('/.netlify/functions/send-report', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        studentName: studentName,
-                        level: level,
-                        score: score,
-                        pdfBase64: pdfBase64
-                    })
-                });
-
-                if (response.ok) {
-                    statusText.innerText = "✅ Reporte enviado exitosamente al sistema.";
-                    statusText.classList.add('text-green-500');
-                } else {
-                    console.error("Error backend:", await response.text());
-                    statusText.innerText = "⚠️ Resultados guardados localmente (Error de conexión).";
-                }
-            } catch (error) {
-                console.error("Error crítico:", error);
-                statusText.innerText = "⚠️ Error al procesar el envío.";
-            }
-        }
-
-        function downloadReport() {
-            const element = document.getElementById('pdf-report');
-            element.style.display = 'block';
-            const opt = { margin: 0.5, filename: `Grammar_DX_${studentName.replace(/\s+/g,'_')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
-            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
-        }
-
-        function copyResultToken() {
-            const textToCopy = `Evaluación Gramatical: Nivel ${finalLevelResult} | Score: ${score}/60`;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const btn = document.getElementById('btn-copy-token');
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> COPIADO';
-                setTimeout(() => btn.innerHTML = original, 2000);
-            });
-        }
-    </script>
+const OPT={margin:0,image:{type:'jpeg',quality:.92},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false},jsPDF:{unit:'in',format:'letter',orientation:'portrait'},pagebreak:{mode:['avoid-all','css']}};
+const WA='5216441671260';
+const AUTO_SEND=true; // pon false mientras la función de Netlify no esté lista
+async function makePdf(){
+  if(S.blob)return S.blob;
+  if(typeof html2pdf==='undefined')throw new Error('html2pdf no disponible');
+  try{if(document.fonts&&document.fonts.ready)await document.fonts.ready}catch(e){}
+  const e=$('pdf');e.style.display='block';
+  try{S.blob=await html2pdf().set(OPT).from(e).outputPdf('blob')}finally{e.style.display='none'}
+  return S.blob;
+}
+const blobB64=b=>new Promise((ok,no)=>{const f=new FileReader();f.onload=()=>ok(String(f.result).split(',')[1]);f.onerror=no;f.readAsDataURL(b)});
+const pdfName=()=>'Examen_'+S.name.replace(/\s+/g,'_')+'.pdf';
+function saveBlob(b){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=pdfName();document.body.append(a);if('download' in a)a.click();else window.open(a.href,'_blank');a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+async function send(){
+  if(!S||!S.res||S.sending)return;S.sending=true;$('retry').hidden=true;st('Enviando tu resultado…');
+  try{
+    const pdfBase64=await blobB64(await makePdf());
+    const r=await fetch('/.netlify/functions/send-report',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({studentName:S.name,level:S.res.level,score:S.res.total,max:S.qs.length,exam:EX[S.exam].n,whatsapp:S.wa,blocks:S.res.sb,weak:S.res.weak.map(w=>w.c),pdfBase64})});
+    if(!r.ok)throw new Error(r.status);
+    st('✅ Resultado enviado a tu profesor.');
+  }catch(e){console.error(e);st('Para que tu profesor reciba tu resultado, envía el mensaje de WhatsApp de arriba.');$('retry').hidden=false}
+  finally{S.sending=false}
+}
+$('retry').onclick=send;
+$('dl').onclick=async()=>{try{saveBlob(await makePdf())}catch(e){console.error(e);st('No se pudo generar el PDF.')}};
+if(/Instagram|FBAN|FBAV|TikTok/i.test(navigator.userAgent))$('inapp').hidden=false;
+$('plg').src=$('lg').src;
+$('again').onclick=()=>location.reload();
+</script>
 </body>
 </html>

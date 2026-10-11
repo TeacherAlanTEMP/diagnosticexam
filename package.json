@@ -1,7 +1,7 @@
 {
-  "name": "temp-serverless-functions",
+  "name": "ingles-para-ti-functions",
   "version": "1.0.0",
-  "description": "Backend logic for TEMP Ecosystem",
+  "description": "Funciones serverless de Inglés Para Ti (envío de reportes de examen de nivel)",
   "main": "index.js",
   "type": "module",
   "dependencies": {
